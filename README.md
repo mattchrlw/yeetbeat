@@ -1,5 +1,4 @@
 ![Logo](https://github.com/mattchrlw/yeetbeat/raw/master/designs/logolong.png)
-**Epic Gamers' UQCS Hackathon Project for 2019**
 
 ## Ideas 
 - Filter by year,s genre, anything from API
