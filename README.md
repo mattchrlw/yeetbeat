@@ -1,4 +1,4 @@
-# music-guesser-game
+![Image](https://github.com/mattchrlw/yeetbeat/raw/master/designs/p.png)
 name tba
 
 ## Ideas 
