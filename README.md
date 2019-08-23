@@ -1,5 +1,4 @@
-![Image](https://github.com/mattchrlw/yeetbeat/raw/master/designs/p.png)
-name tba
+![Logo](https://github.com/mattchrlw/yeetbeat/raw/master/designs/logolong.png)
 
 ## Ideas 
 - Filter by year,s genre, anything from API
