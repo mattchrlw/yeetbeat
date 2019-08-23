@@ -1,5 +1,7 @@
 ![Logo](https://github.com/mattchrlw/yeetbeat/raw/master/designs/logolong.png)
 
+> YeetBeat is a music guessing game for the whole family to enjoy! Guess songs from a short snippet.
+
 ## Ideas 
 - Filter by year,s genre, anything from API
 - Friends playlists
@@ -32,3 +34,26 @@
 - BeatGuesser
 - Beatza
 - :b:otify
+
+## Game:
+- Spotify/Youtube/other + mp3
+- Bootstrap
+- Minimal Javascript. Bandwidth
+- `<media>`
+
+## Server
+- Host, game
+- Send information
+- Game data
+- Game object
+- User cookies/IDs
+
+## Settings
+- Genre/filters
+- Playlists
+
+## Using
+- Scratch
+- Rust
+- Node
+- PHP (No.)
