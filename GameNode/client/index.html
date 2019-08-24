@@ -10,11 +10,13 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.0.1/progressbar.min.js"></script>
-    <script src="js/scripts.js"></script>
+    <link rel="stylesheet" href="lib/awesomplete-gh-pages/awesomplete.css" />
+    <script src="lib/awesomplete-gh-pages/awesomplete.js" async></script>
     <title>YeetBeat</title>
 </head>
 
 <body>
+    <input type="hidden" id="playlistURLvalue">
     <nav class="navbar navbar-dark" style="background-color: #ef5350; height: 70px">
         <div class="center">
             <a class="back-btn invisible" id="back-btn" onclick="window.history.go(-1)">&#8592;&nbsp;&nbsp;</a>
@@ -27,86 +29,99 @@
     </nav>
     <div class="container">
         <div class="main-column">
-        <!-- Image and text -->
-        <div class="padding hideable active" id="home">
-            <img class="home-image" src="img/logosmall.png">
-            <h1 class="display-bold">Guess the song!</h1>
-            <div class="row">
-                <a onclick="javascript:changeView('join')" class="btn btn-lg btn-tall btn-block"
-                    style="background-color: #42A5F5">&rarr;&nbsp; Join</a>
-                <a onclick="javascript:changeView('playlists')" class="btn btn-lg btn-tall btn-block"
-                    style="background-color: #9CCC65" id="createlobby">+&nbsp; New</a>
-                <p class="minimal-text center">Made by Epic Gamers</p>
+            <!-- Image and text -->
+            <div class="padding hideable active" id="home">
+                <img class="home-image" src="img/logosmall.png">
+                <h1 class="display-bold">Guess the song!</h1>
+                <div class="row">
+                    <a onclick="javascript:changeView('join')" class="btn btn-lg btn-tall btn-block"
+                        style="background-color: #42A5F5">&rarr;&nbsp; Join</a>
+                    <a onclick="javascript:changeView('playlists')" class="btn btn-lg btn-tall btn-block"
+                        style="background-color: #9CCC65" id="createlobby">+&nbsp; New</a>
+                    <p class="minimal-text center">Made by Epic Gamers</p>
+                </div>
             </div>
-        </div>
-        <div class="padding hideable" id="playlists">
-            <h1 class="display-bold">Playlists</h1>
-            <p>This page shows a list of the songs in the playlist. You can add songs or whatever. After done, go to
-                lobby</p>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" id="nameboxcreate" placeholder="Enter name" aria-label="Enter name">
+            <div class="padding hideable" id="playlists">
+                <h1 class="display-bold">Playlists</h1>
+                <p>This page shows a list of the songs in the playlist. You can add songs or whatever. After done, go to
+                    lobby</p>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="nameboxcreate" placeholder="Enter name"
+                        aria-label="Enter name">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="playlistURL" placeholder="Enter playlist URL"
+                        aria-label="Enter name">
+                        <!--Style me. Error message for when the url isn't valid-->
+                    <label id="playlistURLError"></label>
+                </div>
+                <a onclick="javascript:changeView('room')" class="btn btn-lg btn-block"
+                    style="background-color: #42A5F5" id="openroom">Open Room</a>
+                <a onclick="javascript:changeView('settings')" class="btn btn-lg btn-block"
+                    style="background-color: #CCCCCC">Settings</a>
+            </div>  
+            <div class="padding hideable" id="room">
+                <h1 class="display-bold">Room</h1> 
+                <div class="room-code" id="room-code">MATTS RANDOM NUMBER</div>
+                <div id="Users">
+                    <div class="room-user">fasji</div>
+                    <div class="room-user">fweajio</div>
+                    <div class="room-user">fdwajio</div>
+                </div>
+                <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block"
+                    style="background-color: #9CCC65">Start Game</a>
             </div>
-            <a onclick="javascript:changeView('room')" class="btn btn-lg btn-block"
-                style="background-color: #42A5F5" id="openroom">Open Room</a>
-            <a onclick="javascript:changeView('settings')" class="btn btn-lg btn-block"
-                style="background-color: #CCCCCC">Settings</a>
-        </div>
-        <div class="padding hideable" id="room">
-            <h1 class="display-bold">Room</h1> 
-            <div class="room-code" id="room-code">MATTS RANDOM NUMBER</div>
-            <div id="Users">
-                <div class="room-user">fasji</div>
-                <div class="room-user">fweajio</div>
-                <div class="room-user">fdwajio</div>
+            <div class="padding hideable" id="join">
+                <h1 class="display-bold">Join</h1>
+                <p>Here we insert a list of the players in the lobby. After people have joined, click start game.</p>
+                <div class="input-group mb-3">
+                    <input type="text" id="joinroomname" class="form-control" id="nameboxjoin" placeholder="Player name" aria-label="Enter name">
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" id="joinroomcode" class="form-control mono" maxlength=10 placeholder="Room code" aria-label="Enter code">
+                </div>
+                <a id="joinroombutton" onclick="javascript:changeView('room')" class="btn btn-lg btn-block"
+                    style="background-color: #42A5F5">Join Room</a>
             </div>
-            <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block"
-                style="background-color: #9CCC65">Start Game</a>
-        </div>
-        <div class="padding hideable" id="join">
-            <h1 class="display-bold">Join</h1>
-            <p>Here we insert a list of the players in the lobby. After people have joined, click start game.</p>
-            <div class="input-group mb-3">
-                <input type="text" id="joinroomname" class="form-control" id="nameboxjoin" placeholder="Player name" aria-label="Enter name">
+            <div class="padding hideable" id="settings">
+                <h1 class="display-bold">Settings</h1>
+                <p>This page shows some difficulty settings like nightcore mode and shit</p>
+
+                <!-- ADD THEM HERE B R U H -->
+
+
+
+                <a onclick="javascript:changeView('playlists')" class="btn btn-lg btn-block"
+                    style="background-color: #CCCCCC">Go back to playlist</a>
             </div>
-            <div class="input-group mb-3">
-                <input type="text" id="joinroomcode" class="form-control mono" maxlength=10 placeholder="Room code" aria-label="Enter code">
+            <div class="padding hideable" id="results">
+                <h1 class="display-bold">Current results:</h1>
+                <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block"
+                    style="background-color: #9CCC65">Next round</a>
+                <a onclick="javascript:changeView('gameover')" class="btn btn-lg btn-block"
+                    style="background-color: #ef5350">End game</a>
             </div>
-            <a id="joinroombutton" onclick="javascript:changeView('room')" class="btn btn-lg btn-block"
-                style="background-color: #42A5F5">Join Room</a>
-        </div>
-        <div class="padding hideable" id="settings">
-            <h1 class="display-bold">Settings</h1>
-            <p>This page shows some difficulty settings like nightcore mode and shit</p>
-            <a onclick="javascript:changeView('playlists')" class="btn btn-lg btn-block"
-                style="background-color: #CCCCCC">Go back to playlist</a>
-        </div>
-        <div class="padding hideable" id="results">
-            <h1 class="display-bold">Current results:</h1>
-            <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block"
-                style="background-color: #9CCC65">Next round</a>
-            <a onclick="javascript:changeView('gameover')" class="btn btn-lg btn-block"
-                style="background-color: #ef5350">End game</a>
-        </div>
-        <div class="padding hideable" id="gameover">
-            <h1 class="display-bold">Game over!</h1>
-            <p>This page shows the winner. After this, click the bottom button to go to the home page.</p>
-            <a onclick="javascript:changeView('home')" class="btn btn-lg btn-block btn-secondary">Start again</a>
-        </div>
-        <div class="padding hideable" id="game">
-            <h1 class="display-bold">The game!</h1>
-            <!-- Song input -->
-            <div class="circle"></div>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Guess song" aria-label="Guess song">
+            <div class="padding hideable" id="gameover">
+                <h1 class="display-bold">Game over!</h1>
+                <p>This page shows the winner. After this, click the bottom button to go to the home page.</p>
+                <a onclick="javascript:changeView('home')" class="btn btn-lg btn-block btn-secondary">Start again</a>
             </div>
-            <a onclick="javascript:changeView('results')" class="btn btn-lg btn-block"
-                style="background-color: #9CCC65">Finish round</a>
-        </div>
+            <div class="padding hideable" id="game">
+                <h1 class="display-bold">The game!</h1>
+                <!-- Song input -->
+
+                <div class="circle"></div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Guess song" aria-label="Guess song">
+                </div>
+                <a id="answersubmit" onclick="javascript:changeView('results')" class="btn btn-lg btn-block"
+                    style="background-color: #9CCC65">Finish round</a>
+            </div>
         </div>
     </div>
 </body>
-
 <!-- Shit needa run after bruh -->
+<script src="js/scripts.js"></script>
 <script src="lib/underscore-min.js"></script>
 <script src="lib/socket.io.min.js"></script>
 <script src="lib/cloak-client.min.js"></script>
