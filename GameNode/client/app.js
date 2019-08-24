@@ -161,4 +161,4 @@ createRoomPart2.addEventListener('click', (function (e) {
   cloak.message('listUsers');
 }));
 
-cloak.run('http://localhost:5000');
+cloak.run('http://yeetbeat.fun');
