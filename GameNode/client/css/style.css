@@ -156,3 +156,10 @@ body {
     max-width: 400px;
     margin: 0 auto;
 }
+
+.room-code {
+    text-align: center;
+    font-size: 3em;
+    color: gray;
+    font-weight: 900;
+}
