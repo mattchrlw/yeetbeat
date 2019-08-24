@@ -14,7 +14,7 @@ var createLobbyButton = document.querySelector('#createlobby');
 
 cloak.configure({
   messages: {
-    /*chat: function(msg) {
+    chat: function(msg) {
       var message = document.createElement('div');
       message.textContent = msg;
       message.className = 'msg';
@@ -23,7 +23,7 @@ cloak.configure({
     },
     userCount: function(count) {
       //counter.textContent = count;
-    },*/
+    },
     'joinLobbyResponse': function(success) {
       console.log('joined lobby');
       game.refreshLobby();
