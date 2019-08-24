@@ -4,12 +4,31 @@
 <button onclick="stopAudio()">stop</button>
 
 <script>
-    var sound = new Pizzicato.Sound({ 
+    // IMPORTING THE SOUND FILE
+    var sound = new Pizzicato.Sound({
         source: 'file',
         options: { path: '../music/Hello.mp3' }
     }, function() {
         console.log('sound file loaded!');
     });
+
+    //  EFFECTS
+    var tremolo = new Pizzicato.Effects.Tremolo({
+        speed: 7,
+        depth: 0.8,
+        mix: 0.8
+    });
+    var bassBoost = new Pizzicato.Effects.LowPassFilter({
+    frequency: 400,
+    peak: 10
+    });
+    var earRape = new Pizzicato.Effects.RingModulator({
+    speed: 30,
+    distortion: 1,
+    mix: 0.5
+    });
+
+    // PLAYING THE AUDIO
     function playAudio() {
         var distortion = new Pizzicato.Effects.Distortion({
             gain: 0.4
@@ -17,6 +36,7 @@
         sound.addEffect(distortion);
         sound.play();
     }
+    // STOPPING THE AUDIO
     function stopAudio(){
         sound.stop();
     }
