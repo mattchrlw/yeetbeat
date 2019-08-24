@@ -8,6 +8,18 @@ const bodyParser = require('body-parser');
 var path = require('path');
 const ypi = require('youtube-playlist-info');
 
+function cleanTitle(title) {
+    return title
+        .replace(/ [([]official video[)\]]/i, '')
+        .replace(/ [([]official[)\]]/i, '')
+        .replace(/ [([]official music video[)\]]/i, '')
+        .replace(/ [([]music video[)\]]/i, '')
+        .replace(/ [([]lyrics[)\]]/i, '')
+        .replace(/ [([]reupload[)\]]/i, '')
+        .replace(/ [([]with lyrics[)\]]/i, '')
+        .replace(/ + lyrics/i, '');
+}
+
 //This function downloads a 
 async function playlist(url) {
     try {
@@ -20,7 +32,7 @@ async function playlist(url) {
             
             items.forEach(function(value){
                 videos.push({
-                    title: value.title,
+                    title: cleanTitle(value.title),
                     video_id: value.resourceId.videoId
                 });
             });
@@ -62,8 +74,8 @@ async function playlist(url) {
     }
 }
 
-app.get('/download', async function (req, res) {
-    const data = await playlist('https://www.youtube.com/playlist?list=PLIlkhzRShuASJe5Bxvh2RFkhfcAVT757g');
+app.get('/playlist/:url/songs', async function (req, res) {
+    const data = await playlist(req.params.url);
     /*var video = youtubedl('http://www.youtube.com/watch?v=90AiXO1pAiA',
         // Optional arguments passed to youtube-dl.
         ['-f 140'],
@@ -86,7 +98,7 @@ app.get('/download', async function (req, res) {
     });
     video.pipe(fs.createWriteStream('myvideo.m4a'));*/
     res.json(data);
-})
+});
 
 app.post('/', function (req, res) {
 
