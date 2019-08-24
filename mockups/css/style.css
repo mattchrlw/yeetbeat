@@ -1,0 +1,104 @@
+@import url('https://rsms.me/inter/inter.css');
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap');
+@keyframes fadeIn{
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+} 
+  
+@-moz-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+}
+  
+@-webkit-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+}
+  
+@-o-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+}
+  
+@-ms-keyframes fadeIn {
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+}
+
+body {
+    font-family: 'Roboto', sans-serif !important;    
+}
+
+.container {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.minimal-text {
+    font-size: 0.75em;
+    color: #666666;
+}
+
+.center { 
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+.padding {
+    margin: 50px;
+}
+
+.display-bold {
+    font-weight: 900;
+    font-size: 2em;
+    letter-spacing: -0.05em;
+    text-align: center;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    color: white;
+    height: 150px;
+    font-size: 1.5em;
+}
+
+.btn:hover {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.5em;
+}
+
+.back-btn {
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.back-btn:hover {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
