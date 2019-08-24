@@ -146,12 +146,12 @@ createRoomPart2.addEventListener('click', (function(e) {
 
   // SETS USERS NAME AND ADDS TO LOBBY
   //user.name = nameboxcreate.value;
-  nameboxcreate.value = '11111';
-    console.log(nameboxcreate.value);
-    console.log(' -- Room Button 2 clicked');
-  cloak.message('addUserToRoom', nameboxcreate.value, ))
-
-
+  userNameInputCreate.value = 'asdfasdfasdfadsf';
+  cloak.message('listUsers', userNameInputCreate.value);
+  console.log(' -- Room Button 2 clicked');
+    //console.log(' -- New user name ' + user.name);
+    //    console.log(cloak.currentUser());
+        // console.log(this.currentUser());
 }));
 
 
