@@ -1,6 +1,9 @@
 <script src="../scripts/Pizzicato/Pizzicato.js"></script>
 
 <button onclick="playAudio()">play</button>
+<button onclick="playAudio('tremolo')">play</button>
+<button onclick="playAudio('bassboost')">play</button>
+<button onclick="playAudio('earrape')">play</button>
 <button onclick="stopAudio()">stop</button>
 
 <script>
@@ -18,23 +21,28 @@
         depth: 0.8,
         mix: 0.8
     });
-    var bassBoost = new Pizzicato.Effects.LowPassFilter({
+    var bassboost = new Pizzicato.Effects.LowPassFilter({
         frequency: 400,
         peak: 10
     });
-    var earRape = new Pizzicato.Effects.RingModulator({
+    var earrape = new Pizzicato.Effects.RingModulator({
         speed: 30,
         distortion: 1,
         mix: 0.5
     });
 
     // PLAYING THE AUDIO
-    function playAudio() {
-        var distortion = new Pizzicato.Effects.Distortion({
-            gain: 0.4
-        });
-        sound.addEffect(distortion);
-        sound.play();
+    function playAudio(myEffect) {
+      /* A function to play audio - args: effect (if no arg then no effect) */
+      switch (myEffect){
+        case 'tremolo':
+          sound.addEffect(tremolo);
+        case 'bassboost':
+          sound.addEffect(bassboost);
+        case 'earrape':
+          sound.addEffect(earrape);
+      }
+      sound.play();
     }
     // STOPPING THE AUDIO
     function stopAudio(){
