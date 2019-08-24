@@ -79,7 +79,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: white !important;
+    cursor: pointer;
     height: 50px;
     font-size: 1.25em;
 }
@@ -111,4 +112,12 @@ body {
 .invisible {
     /* visibility: none; */
     font-weight: bold;
+}
+
+.hideable {
+    display: none;
+}
+
+.active {
+    display: inherit;
 }
