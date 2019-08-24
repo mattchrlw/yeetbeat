@@ -1,5 +1,6 @@
 /** Progress circle for song progress. */
 var circle;
+var youtubeArr = [];
 
 /** Handler functions fired when the view is changed to a particular view. */
 const viewHandlers = {
@@ -92,20 +93,22 @@ function startSong(songDetails) {
 }
 
 function initGame() {
+    debugger;
     startSong({duration: 10000});
-    var max = arr.length;
-    var min = 0;
-    var random = Math.floor(Math.random() * (+max - +min)) + +min
-    fetch("http://localhost:8070/downloadYoutube/"+encodeURIComponent("https://www.youtube.com/watch?v="+"").value))
+    var random = Math.floor(Math.random() * (youtubeArr.length-0.001));
+    var result = youtubeArr[random];
+    
+    fetch("http://localhost:8070/downloadYoutube/"+encodeURIComponent("https://www.youtube.com/watch?v="+result.video_id))
         .then(data => data.json())
         .then(function(filename) {
             var sound = new Pizzicato.Sound({ 
                 source: 'file',
-                options: { path: '..'+filename }
+                options: { path: filename }
             }, function() {
                 //console.log('sound file loaded!');
             });
             sound.play();
+            youtubeArr.splice(random, 1);
         });
 }
 
@@ -118,7 +121,7 @@ function loadAutoComp() {
             }
             else {
                 var alist = [];
-                var list2 = document.getElementById("arrOfVideoIds");
+                youtubeArr = songtitles;
                 songtitles.forEach(function(item){
                     alist.push(item.title);
                 });

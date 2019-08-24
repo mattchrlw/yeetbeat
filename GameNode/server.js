@@ -26,11 +26,12 @@ async function downloadYoutubeVid(url) {
   var createdFileName = "";
 
   // Will be called when the download starts.
-  video.on('info', function (info) {
+  /*video.on('info', function (info) {
     createdFileName = info._filename;
-  });
-  video.pipe(fs.createWriteStream("/media/" + createdFileName));
-  return "/media/" +createdFileName;
+  });*/
+  var rand = Math.random();
+  video.pipe(fs.createWriteStream("client/media/video" + rand.toString() + ".mp3"));
+  return "/media/video" + rand.toString() + ".mp3";
 }
  
 /*async function downloadPlaylist(url) {
