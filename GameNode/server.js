@@ -49,7 +49,9 @@ cloak.configure({
       user.message('roomCreated', {
         success: success,
         roomId: room.id,
-        roomName: room.name
+        roomName: room.name,
+        user: user,
+        room: room
       });
 
     }

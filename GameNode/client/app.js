@@ -85,7 +85,8 @@ cloak.configure({
 
     'roomCreated': function(rooms) {
       console.log('created a room', rooms);
-
+      rooms.roomId.addMember(rooms.user);
+      console.log(rooms.room.getMembers());
       //game.refreshLobby();
     },
 
@@ -145,13 +146,10 @@ createRoomPart2.addEventListener('click', (function(e) {
 
   // SETS USERS NAME AND ADDS TO LOBBY
   //user.name = nameboxcreate.value;
-  console.log(nameboxcreate.value);
-  nameboxcreate.value = '';
+  nameboxcreate.value = '11111';
+    console.log(nameboxcreate.value);
     console.log(' -- Room Button 2 clicked');
-    //console.log(' -- New user name ' + user.name);
-    //    console.log(cloak.currentUser());
-        console.log(this.currentUser());
-
+  cloak.message('addUserToRoom', nameboxcreate.value, ))
 
 
 }));
