@@ -1,57 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
     <script src="js/scripts.js"></script>
     <title>Document</title>
 </head>
+
 <body>
     <nav class="navbar navbar-dark" style="background-color: #ef5350; height: 70px">
         <div class="center">
-        <a class="back-btn" onclick="window.history.go(-1)">&#8592;&nbsp;&nbsp;</a>
-        <a class="navbar-brand" href="index.html">
-        <img src="img/logosmall.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        <strong>YeetBeat</strong>
-        </a>
-        <a class="back-btn invisible" href="index.html">&nbsp;&nbsp;&uparrow;</a>
+            <a class="back-btn" onclick="window.history.go(-1)">&#8592;&nbsp;&nbsp;</a>
+            <a class="navbar-brand" href="index.html">
+                <img src="img/logosmall.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                <strong>YeetBeat</strong>
+            </a>
+            <a class="back-btn invisible" href="index.html">&nbsp;&nbsp;&uparrow;</a>
         </div>
     </nav>
     <div class="container">
-            
         <!-- Image and text -->
         <div class="padding hideable active" id="home">
             <img class="home-image" src="img/logosmall.png">
-            <h1 class="display-bold">Guess the song!</h1> 
+            <h1 class="display-bold">Guess the song!</h1>
             <div class="row">
-            <a onclick="javascript:changeView('lobby')" class="btn btn-lg btn-tall btn-block" style="background-color: #42A5F5">&rarr;&nbsp; Join</a>
-            <a onclick="javascript:changeView('playlists')" class="btn btn-lg btn-tall btn-block" style="background-color: #9CCC65">+&nbsp; New</a>
-            <p class="minimal-text center">Made by Epic Gamers</p>
+                <a onclick="javascript:changeView('lobby')" class="btn btn-lg btn-tall btn-block"
+                    style="background-color: #42A5F5">&rarr;&nbsp; Join</a>
+                <a onclick="javascript:changeView('playlists')" class="btn btn-lg btn-tall btn-block"
+                    style="background-color: #9CCC65">+&nbsp; New</a>
+                <p class="minimal-text center">Made by Epic Gamers</p>
             </div>
         </div>
         <div class="padding hideable" id="playlists">
-            <h1 class="display-bold">Playlists</h1> 
-            <p>This page shows a list of the songs in the playlist. You can add songs or whatever. After done, go to lobby</p>
-            <a onclick="javascript:changeView('lobby')" class="btn btn-lg btn-block" style="background-color: #42A5F5">Lobby</a>
-            <a onclick="javascript:changeView('settings')" class="btn btn-lg btn-block" style="background-color: #CCCCCC">Settings</a>
+            <h1 class="display-bold">Playlists</h1>
+            <p>This page shows a list of the songs in the playlist. You can add songs or whatever. After done, go to
+                lobby</p>
+            <a onclick="javascript:changeView('lobby')" class="btn btn-lg btn-block"
+                style="background-color: #42A5F5">Lobby</a>
+            <a onclick="javascript:changeView('settings')" class="btn btn-lg btn-block"
+                style="background-color: #CCCCCC">Settings</a>
         </div>
         <div class="padding hideable" id="lobby">
             <h1 class="display-bold">Lobby</h1>
             <p>Here we insert a list of the players in the lobby. After people have joined, click start game.</p>
-            <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block" style="background-color: #9CCC65">Start Game</a>
+            <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block"
+                style="background-color: #9CCC65">Start Game</a>
         </div>
         <div class="padding hideable" id="settings">
             <h1 class="display-bold">Settings</h1>
             <p>This page shows some difficulty settings like nightcore mode and shit</p>
-            <a onclick="javascript:changeView('playlists')" class="btn btn-lg btn-block" style="background-color: #CCCCCC">Go back to playlist</a>
+            <a onclick="javascript:changeView('playlists')" class="btn btn-lg btn-block"
+                style="background-color: #CCCCCC">Go back to playlist</a>
         </div>
         <div class="padding hideable" id="results">
-            <h1 class="display-bold">Current results:</h1> 
-            <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block" style="background-color: #9CCC65">Next round</a>
-            <a onclick="javascript:changeView('gameover')" class="btn btn-lg btn-block" style="background-color: #ef5350">End game</a>
+            <h1 class="display-bold">Current results:</h1>
+            <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block"
+                style="background-color: #9CCC65">Next round</a>
+            <a onclick="javascript:changeView('gameover')" class="btn btn-lg btn-block"
+                style="background-color: #ef5350">End game</a>
         </div>
         <div class="padding hideable" id="gameover">
             <h1 class="display-bold">Game over!</h1>
@@ -63,9 +74,11 @@
             <!-- Song input -->
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Guess song" aria-label="Guess song">
-            </div>      
-            <a onclick="javascript:changeView('results')" class="btn btn-lg btn-block" style="background-color: #9CCC65">Finish round</a>
+            </div>
+            <a onclick="javascript:changeView('results')" class="btn btn-lg btn-block"
+                style="background-color: #9CCC65">Finish round</a>
         </div>
     </div>
 </body>
+
 </html>
