@@ -154,8 +154,4 @@ createRoomPart2.addEventListener('click', (function(e) {
         // console.log(this.currentUser());
 }));
 
-
-
-
-
-cloak.run('http://130.102.176.91:8090');
+cloak.run('http://localhost');

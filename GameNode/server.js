@@ -3,16 +3,16 @@
 var cloak = require('cloak');
 var _ = require('underscore');
 var connect = require('connect');
-
-var clientPort = 8080;
-var serverPort = 8090;
+const PORT = process.env.PORT || 5000
 
 var sendLobbyCount = function(arg) {
   this.messageMembers('chat', "for lobby");
 };
 
+const server = connect().use(connect.static('./client')).listen(PORT);
+
 cloak.configure({
-  port: serverPort,
+  express: server,
   messages: {
     chat: function(msg, user) {
       user.getRoom().messageMembers('chat', msg);
@@ -91,8 +91,4 @@ cloak.configure({
 
 cloak.run();
 
-connect()
-.use(connect.static('./client'))
-.listen(clientPort);
-
-console.log('client running on on ' + clientPort);
+console.log('We are up and running on port: ' + PORT);
