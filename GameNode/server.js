@@ -71,6 +71,9 @@ cloak.configure({
 
 
       */
+
+
+      console.log("Room Initation " + this.name + " " + this.id);
     },
 
 
