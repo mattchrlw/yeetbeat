@@ -4,6 +4,14 @@ var circle;
 /** Handler functions fired when the view is changed to a particular view. */
 const viewHandlers = {
     game: initGame,
+    room: loadAutoComp,
+    settings: loadAutoComp,
+}
+
+var textURL = document.getElementById("playlistURL");
+textURL.onkeyup = function () {
+    var hidden = document.getElementById("playlistURLvalue");
+    hidden.value = textURL.value;
 }
 
 function pushHistory(id) {
@@ -85,6 +93,24 @@ function startSong(songDetails) {
 
 function initGame() {
     startSong({duration: 10000});
+}
+
+function loadAutoComp() {
+    fetch("/getPlaylist/"+encodeURIComponent(document.getElementById("playlistURLvalue").value))
+        .then( function(songtitles) {
+            debugger;
+            if (songtitles === 'ERROR: Link invalid') {
+                //problem send help
+            }
+            else {
+                var list = document.getElementById('songs');
+                arr.forEach(function(item){
+                    var option = document.createElement('option');
+                    option.value = item.title;
+                    list.appendChild(option);
+                });
+            }
+        });
 }
 
 function main() {
