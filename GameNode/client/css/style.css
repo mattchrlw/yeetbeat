@@ -1,0 +1,145 @@
+@import url('https://rsms.me/inter/inter.css');
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:400,700&display=swap');
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@-ms-keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+body {
+    font-family: 'Inter', sans-serif !important;
+    letter-spacing: -0.02em;
+}
+
+.container {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.minimal-text {
+    font-size: 0.75em;
+    color: #666666;
+    margin: 10px;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.padding {
+    margin: 50px;
+}
+
+.display-bold {
+    font-weight: 900;
+    font-size: 2em;
+    letter-spacing: -0.04em;
+    text-align: center;
+    margin: 20px;
+}
+
+.home-image {
+    height: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important;
+    cursor: pointer;
+    height: 50px;
+    font-size: 1.25em;
+}
+
+.btn-tall {
+    height: 100px;
+    font-size: 1.5em;
+}
+
+.btn:hover {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.back-btn {
+    color: white !important;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.back-btn:hover {
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.invisible {
+    /* visibility: none; */
+    font-weight: bold;
+}
+
+.hideable {
+    display: none;
+}
+
+.active {
+    display: inherit;
+}
+
+.mono {
+    font-family: 'Roboto Mono', monospace !important;
+    font-size: 2em;
+    text-align: center;
+}

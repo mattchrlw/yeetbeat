@@ -17,11 +17,61 @@ cloak.configure({
   messages: {
     chat: function(msg, user) {
       user.getRoom().messageMembers('chat', msg);
-    }
+    },
+    joinLobby: function(arg, user) {
+      cloak.getLobby().addMember(user);
+      user.message('joinLobbyResponse');
+      console.log("User Joined Lobby " + user.id);
+    },
+    joinRoom: function(id, user) {
+      cloak.getRoom(id).addMember(user);
+      user.message('joinRoomResponse', {
+        id: id,
+        success: true
+      });
+    },
+
+    listRooms: function(arg, user) {
+      user.message('listRooms', cloak.getRooms(true));
+      console.log(cloak.getRooms(true));
+    },
+
+    listUsers: function(arg, user) {
+      user.message('refreshLobby', {
+        users: user.room.getMembers(true),
+        inLobby: user.room.isLobby,
+        roomCount: user.room.getMembers().length,
+        roomSize: user.room.size
+      });
+    },
+
   },
+
   lobby: {
     newMember: sendLobbyCount,
     memberLeaves: sendLobbyCount,
+  },
+  room: {
+    init: function() {
+      /*
+        Room Variables,
+        this.xxxxxxxxx
+        need scores, songs, playlist, l
+        etc etc etc
+
+
+      */
+    },
+
+
+    pulse: function() {
+      // add timed turn stuff here
+    },
+
+    close: function() {
+      this.messageMembers('you have left ' + this.name);
+    }
+
   }
 });
 
