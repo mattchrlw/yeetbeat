@@ -9,7 +9,7 @@ function changeView(id) {
     old.style.animation = 'fadeOut 0.2s ease forwards';
     old.classList.remove('active');
 
-    show.style.visibility = 'true';
+    show.style.visibility = 'visible';
 }
 
 var circle;
