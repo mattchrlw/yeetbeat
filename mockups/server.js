@@ -9,64 +9,61 @@ var path = require('path');
 const ypi = require('youtube-playlist-info');
 
 //This function downloads a 
-function playlist(url) {
+async function playlist(url) {
     try {
-        var listOfSongs = [];
-        var pathToFiles = [];
+        const videos = [];
+
         var PlaylistID = url.split("list=")[1];
         await ypi("AIzaSyDt2-8433-k2eK0GGUIUbKvmO2jkbIvH8Y", PlaylistID).then(items => {
             //console.log(items);
             //List of songs is the titles of the youtube video
             
             items.forEach(function(value){
-                listOfSongs.push(value.title);
+                videos.push({
+                    title: value.title,
+                    video_id: value.resourceId.videoId
+                });
             });
-        }).catch(console.error);
-
-        'use strict';
-        var video = youtubedl(url, ["-f 140"], null);
-
-        video.on('error', function error(err) {
-            //console.log('error 2:', err);
-            throw 'error 2:' + err;
         });
 
-        var size = 0;
-        video.on('info', function (info) {
-            size = info.size;
-            var output = path.join(__dirname + '/', size + '.m4a');
-            pathToFiles.push(output);
-            video.pipe(fs.createWriteStream(output));
-        });
-        //to be removed
-        var pos = 0;
-        video.on('data', function data(chunk) {
-            pos += chunk.length;
-            // `size` should not be 0 here.
-            if (size) {
-                var percent = (pos / size * 100).toFixed(2);
-                process.stdout.cursorTo(0);
-                process.stdout.clearLine(1);
-                process.stdout.write(percent + '%');
-            }
-        });
+        // var video = youtubedl(url, ["-f 140"], null);
 
-        video.on('next', playlist);
-        console.log(listOfSongs);
-        console.log(pathToFiles);
-        return {
-            ListOfSongs: listOfSongs,
-            ListOfFilePaths: pathToFiles,
-        };
+        // video.on('error', function error(err) {
+        //     //console.log('error 2:', err);
+        //     throw 'error 2:' + err;
+        // });
+
+        // var size = 0;
+        // video.on('info', function (info) {
+        //     size = info.size;
+        //     var output = path.join(__dirname + '/', size + '.m4a');
+        //     pathToFiles.push(output);
+        //     video.pipe(fs.createWriteStream(output));
+        // });
+        // //to be removed
+        // var pos = 0;
+        // video.on('data', function data(chunk) {
+        //     pos += chunk.length;
+        //     // `size` should not be 0 here.
+        //     if (size) {
+        //         var percent = (pos / size * 100).toFixed(2);
+        //         process.stdout.cursorTo(0);
+        //         process.stdout.clearLine(1);
+        //         process.stdout.write(percent + '%');
+        //     }
+        // });
+
+        // video.on('next', playlist);
+        return videos;
     }
     catch (e) {
         //playlist link is invalid, do something, don't continue
-        return;
+        return 'ERROR XD';
     }
 }
 
-app.get('/', function (req, res) {
-    playlist('https://www.youtube.com/playlist?list=PLEFA9E9D96CB7F807');
+app.get('/download', async function (req, res) {
+    const data = await playlist('https://www.youtube.com/playlist?list=PLIlkhzRShuASJe5Bxvh2RFkhfcAVT757g');
     /*var video = youtubedl('http://www.youtube.com/watch?v=90AiXO1pAiA',
         // Optional arguments passed to youtube-dl.
         ['-f 140'],
@@ -88,7 +85,7 @@ app.get('/', function (req, res) {
         console.log('finished downloading!');
     });
     video.pipe(fs.createWriteStream('myvideo.m4a'));*/
-    res.render('index');
+    res.json(data);
 })
 
 app.post('/', function (req, res) {
