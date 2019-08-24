@@ -1,3 +1,5 @@
+const SERVER = 'http://localhost:5000'
+
 /** Progress circle for song progress. */
 var circle;
 var youtubeArr = [];
@@ -7,12 +9,6 @@ const viewHandlers = {
     game: initGame,
     room: loadAutoComp,
     settings: loadAutoComp,
-}
-
-var textURL = document.getElementById("playlistURL");
-textURL.onkeyup = function () {
-    var hidden = document.getElementById("playlistURLvalue");
-    hidden.value = textURL.value;
 }
 
 function pushHistory(id) {
@@ -94,27 +90,29 @@ function startSong(songDetails) {
 
 function initGame() {
     // debugger;
-    startSong({duration: 10000});
     var random = Math.floor(Math.random() * (youtubeArr.length-0.001));
     var result = youtubeArr[random];
+    console.log(result);
     
-    fetch("http://localhost:8070/downloadYoutube/"+encodeURIComponent("https://www.youtube.com/watch?v="+result.video_id))
+    fetch(SERVER+"/downloadYoutube/"+encodeURIComponent("https://www.youtube.com/watch?v="+result.video_id))
         .then(data => data.json())
         .then(function(filename) {
-            /*var sound = new Pizzicato.Sound({ 
-                source: 'file',
-                options: { path: filename }
-            }, function() {
-                //console.log('sound file loaded!');
-            });*/
+            // var sound = new Pizzicato.Sound({ 
+            //     source: 'file',
+            //     options: { path: filename }
+            // }, function() {
+            //     //console.log('sound file loaded!');
+            // });
             var sound = new Audio(filename);
             sound.play();
-            //youtubeArr.splice(random, 1);
+            console.log("playing song " + filename);
+            youtubeArr.splice(random, 1);
+            startSong({duration: 10000});
         });
 }
 
 function loadAutoComp() {
-    fetch("http://localhost:8070/getPlaylist/"+encodeURIComponent(document.getElementById("playlistURLvalue").value))
+    fetch(SERVER+"/getPlaylist/"+encodeURIComponent(document.getElementById("playlistURLvalue").value))
         .then(data => data.json())
         .then(function(songtitles) {
             if (songtitles === 'ERROR: Link invalid') {

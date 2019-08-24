@@ -30,7 +30,7 @@
 - Música de pandillas
 - Melodías de pandillas
 - Bandenmusik
-- **YeetBeet**
+- **YeetBeat**
 - BeatGuesser
 - Beatza
 - :b:otify

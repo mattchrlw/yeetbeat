@@ -11,18 +11,27 @@ const bodyParser = require('body-parser');
 var path = require('path');
 const ypi = require('youtube-playlist-info');
 
-var clientPort = 8080;
-var serverPort = 8090;
 
+const PORT = process.env.PORT || 5000
+
+// CORS
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
 
-async function downloadYoutubeVid(url) {
-  var video = await youtubedl(url, ['-f 140'],
-    { cwd: __dirname });
+async function downloadYoutubeVid(url, flag) {
+  var video = await youtubedl.exec(url, ['-g', '-f', '140'], { cwd: __dirname }, function(err, output)  {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    // console.log(JSON.stringify(output));
+    flag.url = output[0];
+    flag.done = 1;
+  });
+  console.log(video);
   var createdFileName = "";
 
   // Will be called when the download starts.
@@ -31,20 +40,7 @@ async function downloadYoutubeVid(url) {
   });*/
   var rand = Math.random();
   console.log("hi");
-  video.on("end", function() {
-    console.log("doneski");
-  });
   var pos = 0;
-  video.on('data', function data(chunk) {
-    pos += chunk.length;
-    // `size` should not be 0 here.
-    if (1) {
-      process.stdout.cursorTo(0);
-      process.stdout.clearLine(1);
-      process.stdout.write(pos+ ' pos');
-    }
-  });
-  video.pipe(fs.createWriteStream("client/media/video" + rand.toString() + ".mp3"));
   return "/media/video" + rand.toString() + ".mp3"; //attach to game
 }
  
@@ -89,9 +85,15 @@ async function getPlayList(url) {
   }
 }
 
+const delay = time => new Promise(res=>setTimeout(res,time));
 app.get('/downloadYoutube/:url', async function (req, res) {
-  const data = await downloadYoutubeVid(req.params.url);
-  res.pipe(fs.createReadStream('client' + data));
+  const flag = {};
+  const data = await downloadYoutubeVid(req.params.url, flag);
+  while (!flag.done) {
+    await delay(200);
+  }
+  console.log('returning url: ' + flag.url);
+  res.json(flag.url);
 })
 
 app.get('/getPlaylist/:url', async function (req, res) {
@@ -103,13 +105,46 @@ var sendLobbyCount = function (arg) {
   this.messageMembers('chat', "for lobby");
 };
 
+//const server = connect().use(connect.static('./client')).listen(PORT);
+
+app.use("/", express.static(__dirname + "/client"));
+
+const server = app.listen(PORT, function () {
+  console.log(`Example app listening on port ${ PORT }!`);
+})
+
+const rooms = {};
+
+function sendRefreshRoom(user) {
+  user.message('refreshRoom', {
+    users: user.room.getMembers(true),
+    room: user.room.name,
+    count: user.room.getMembers(true).length
+  });
+}
+
+function sendAllRefreshRoom(room) {
+  room.getMembers().forEach(user => {
+    sendRefreshRoom(user);
+  })
+}
+
 cloak.configure({
-  port: serverPort,
+  express: server,
   messages: {
     chat: function (msg, user) {
       user.getRoom().messageMembers('chat', msg);
     },
-    joinLobby: function (arg, user) {
+
+
+
+
+    checkAnswer: function(arg, user) {
+      user.getRoom();
+
+    },
+    ////////////////////////////////////////////
+    joinLobby: function(arg, user) {
       cloak.getLobby().addMember(user);
       user.message('joinLobbyResponse');
       console.log("User Joined Lobby " + user.id);
@@ -124,28 +159,38 @@ cloak.configure({
 
     listRooms: function (arg, user) {
       user.message('listRooms', cloak.getRooms(true));
-      console.log("List Rooms " + cloak.getRooms(true));
+      console.log("received list rooms " + cloak.getRooms(true));
     },
+    //////////////////////////////////////////////
+    listUsers: function(arg, user) {
+      sendRefreshRoom(user);      
+    },
+    createRoom: function(arg, user) {
+      const roomNum = Math.floor(Math.random()*1000000-1);
+      var room = cloak.createRoom(roomNum, 100);
+      user.name = arg;
 
-    listUsers: function (arg, user) {
-      user.message('refreshLobby', {
-        users: user.room.getMembers(true),
-        inLobby: user.room.isLobby,
-        roomCount: user.room.getMembers().length,
-        roomSize: user.room.size
-      });
-    },
-    createRoom: function (arg, user) {
-      var room = cloak.createRoom(Math.floor(Math.random() * 100000 - 1), 1000);
+      console.log("creating room " + roomNum + ' for ' + arg);
+      rooms[roomNum] = room;
+      console.log("all rooms: " + JSON.stringify(rooms));
+
       var success = room.addMember(user);
       user.message('roomCreated', {
         success: success,
         roomId: room.id,
-        roomName: room.name,
-        user: user,
-        room: room
+        roomName: room.name
       });
+    },
+    joinRoomFromName: function(arg,user)  {
+      console.log("user joining room!");
+      // console.log("all rooms: " + JSON.stringify(rooms));
 
+      const room = rooms[arg.room];
+      user.name = arg.username;
+      room.addMember(user);
+
+      console.log("refreshing other users in room " + room.name);
+      sendAllRefreshRoom(room);
     }
 
   },
@@ -164,8 +209,13 @@ cloak.configure({
 
 
       */
+      this.playlist;
+      this.amountSongs;
+      this.scores = {playerid: x, score: y};
+      this.songlength;
+      this.modifiers;
 
-
+      console.log(cloak.getRooms(true));
       console.log("Room Initation " + this.name + " " + this.id);
     },
 
@@ -183,12 +233,4 @@ cloak.configure({
 
 cloak.run();
 
-connect()
-  .use(connect.static('./client'))
-  .listen(clientPort);
-
-console.log('client running on on ' + clientPort);
-
-app.listen(8070, function () {
-  console.log('Example app listening on port 8070!');
-})
+console.log('We are up and running on port: ' + PORT);
