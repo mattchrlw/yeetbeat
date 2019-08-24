@@ -10,27 +10,50 @@
 //var counter = document.querySelector('#counter');
 
 var createRoomButton = document.querySelector('#createlobby');
-var createRoomPart2 = document.querySelector('#openroom')
-var userNameInputCreate = document.querySelector('#nameboxcreate')
+var createRoomPart2 = document.querySelector('#openroom');
+var userNameInputCreate = document.querySelector('#nameboxcreate');
+
+var joinRoomName = document.querySelector('#joinroomname');
+var joinRoomCode = document.querySelector('#joinroomcode');
+var joinRoomButton = document.querySelector('#joinroombutton');
+var answerSubmit = document.querySelector('#answersubmit');
+
 
 cloak.configure({
   messages: {
-    chat: function(msg) {
+    /*chat: function (msg) {
       var message = document.createElement('div');
       message.textContent = msg;
       message.className = 'msg';
       messages.appendChild(message);
       messages.scrollTop = messages.scrollHeight;
     },
-    userCount: function(count) {
+    userCount: function (count) {
       //counter.textContent = count;
-    },
-    'joinLobbyResponse': function(success) {
+    },*/
+    'joinLobbyResponse': function (success) {
       console.log('joined lobby');
       game.refreshLobby();
     },
+    'refreshRoom': function (data) {
+      var users = data.users;
+      var roomCount = data.count;
+      var UsersElement = document.getElementById('Users');
+      document.getElementById("room-code").textContent = data.room;
 
-    'joinRoomResponse': function(result) {
+      UsersElement.innerHTML = ''; // clears children of Users
+
+      console.log('refreshing room (with '+roomCount+' users): '+ users);
+      users.forEach(({id, name}) => {
+        const div = document.createElement('div');
+        div.className = 'room-user';
+        div.textContent = name;
+        UsersElement.appendChild(div);
+      });
+
+    }
+    ,
+    'joinRoomResponse': function (result) {
       if (result.success) {
         game.room.id = result.id;
         game.begin();
@@ -38,7 +61,7 @@ cloak.configure({
       }
     },
     //
-    refreshWaitingResponse: function(members) {
+    refreshWaitingResponse: function (members) {
       if (!members) {
         return;
       }
@@ -50,57 +73,47 @@ cloak.configure({
         waitingForPlayerElem.style.display = 'none';
       }
     },
+    submitAnswer: function () {},
     //
-    'roomCreated': function(result) {
+    'roomCreated': function (result) {
       console.log(result.success ? 'room join success' : 'room join failure');
       if (result.success) {
-        //game.room.id = result.roomId;
-        //game.begin();
-        console.log("Room Information" + result.roomId + " " + result.roomName);
-        document.getElementById("room-code").innerHTML = result.roomName;
-
+        console.log("Room Information " + result.roomId + " " + result.roomName);
+        document.getElementById("room-code").textContent = result.roomName;
       }
     },
-    //
-
   },
+  //
   serverEvents: {
-    'connect': function() {
+    'connect': function () {
       console.log('connect');
     },
 
-    'disconnect': function() {
+    'disconnect': function () {
       console.log('disconnect');
     },
 
-    'lobbyMemberJoined': function(user) {
+    'lobbyMemberJoined': function (user) {
       console.log('lobby member joined', user);
       cloak.message('listUsers');
     },
 
-    'lobbyMemberLeft': function(user) {
+    'lobbyMemberLeft': function (user) {
       console.log('lobby member left', user);
       cloak.message('listUsers');
     },
 
-    'roomCreated': function(rooms) {
-      console.log('created a room', rooms);
-      rooms.roomId.addMember(rooms.user);
-      console.log(rooms.room.getMembers());
-      //game.refreshLobby();
-    },
-
-    'roomDeleted': function(rooms) {
+    'roomDeleted': function (rooms) {
       console.log('deleted a room', rooms);
       game.refreshLobby();
     },
 
-    'roomMemberJoined': function(user) {
+    'roomMemberJoined': function (user) {
       console.log('room member joined', user);
       //game.refreshWaiting();
     },
 
-    'roomMemberLeft': function(user) {
+    'roomMemberLeft': function (user) {
       console.log('room member left', user);
       // The other player dropped, so we need to stop the game and show return to lobby prompt
       game.showGameOver('The other player disconnected!');
@@ -108,7 +121,7 @@ cloak.configure({
       console.log('Removing you from the room because the other player disconnected.');
     },
 
-    'begin': function() {
+    'begin': function () {
       console.log('begin');
       cloak.message('listRooms');
     }
@@ -136,26 +149,25 @@ lobbyForm.addEventListener('submit', function(e) {
   console.log(cloak.currentUser());
 });
 */
-createRoomButton.addEventListener('click', (function(e) {
-  cloak.message('createRoom', "1234" );
-    console.log('New button clicked');
-
+joinRoomButton.addEventListener('click', (function (e) {
+  var x = joinRoomCode.value;
+  var y = joinRoomName.value;
+  console.log({x, y});
+  cloak.message('joinRoomFromName', { room: x, username: y });
 }));
 
-createRoomPart2.addEventListener('click', (function(e) {
+createRoomPart2.addEventListener('click', (function (e) {
+  console.log('clicked make new room button');
+  console.log(`username "${userNameInputCreate.value}"`);
 
-  // SETS USERS NAME AND ADDS TO LOBBY
-  //user.name = nameboxcreate.value;
-  userNameInputCreate.value = 'asdfasdfasdfadsf';
-  cloak.message('listUsers', userNameInputCreate.value);
-  console.log(' -- Room Button 2 clicked');
-    //console.log(' -- New user name ' + user.name);
-    //    console.log(cloak.currentUser());
-        // console.log(this.currentUser());
+  cloak.message('createRoom', userNameInputCreate.value);
+  cloak.message('listUsers');
+}));
+answerSubmit.addEventListener('click', (function (e) {
+  console.log('clicked submit answer');
+  cloak.message('createRoom', userNameInputCreate.value);
+  cloak.message('listUsers');
 }));
 
-
-
-
-
-cloak.run('localhost:8090');
+cloak.run(SERVER); // dev mode
+// cloak.run('http://yeetbeat.fun')
