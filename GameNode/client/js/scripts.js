@@ -92,7 +92,7 @@ function startSong(songDetails) {
 }
 
 function initGame() {
-    startSong({duration: 100000});
+    startSong({duration: 10000});
 }
 
 function loadAutoComp() {
