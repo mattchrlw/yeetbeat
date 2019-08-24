@@ -73,7 +73,7 @@ cloak.configure({
         waitingForPlayerElem.style.display = 'none';
       }
     },
-    submitAnswer: function ()
+    submitAnswer: function () {},
     //
     'roomCreated': function (result) {
       console.log(result.success ? 'room join success' : 'room join failure');
