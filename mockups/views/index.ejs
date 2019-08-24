@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Downloader</title>
+</head>
+<body>
+    <button onclick="play()">Play</button>
+</body>
+<script src="../scripts/Pizzicato/Pizzicato.js"></script>
+    <script>
+        var sound = new Pizzicato.Sound({ 
+        source: 'file',
+        options: { path: '../lol-90AiXO1pAiA.m4a' }
+    }, function() {
+        console.log('sound file loaded!');
+    });
+    function playAudio() {
+        var distortion = new Pizzicato.Effects.Distortion({
+            gain: 0.4
+        });
+        sound.addEffect(distortion);
+        sound.play();
+    }
+    </script>
+</html>
