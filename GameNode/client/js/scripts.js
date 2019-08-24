@@ -6,6 +6,19 @@ const viewHandlers = {
     game: initGame,
 }
 
+function pushHistory(id) {
+    const href = window.location.href;
+    history.pushState({title: id, id}, "YeetBeet - " + id, href);
+}
+
+window.addEventListener('popstate', function (ev) {
+    if (ev.state) {
+        console.log(`Changing view to ${ev.state.id} from history.`);
+        _showView(ev.state.id);
+        ev.preventDefault();
+    }
+});
+
 /**
  * Changes the active view to the given view, hiding other views.
  * Shows/hides back button depending on if page is home page.
@@ -13,8 +26,12 @@ const viewHandlers = {
  * @param {string} id View ID (without hash)
  */
 function changeView(id) {
-    console.log("Changing view to " + id);
+    console.log(`Changing view to ${id} normally.`);
+    pushHistory(id);
+    _showView(id);
+}
 
+function _showView(id) {
     const old = document.querySelector('.active');
     old.style.animation = 'fadeOut 0.2s ease forwards';
     old.classList.remove('active');
@@ -71,7 +88,7 @@ function initGame() {
 }
 
 function main() {
-    // pass
+    changeView('home');
 }
 
 setTimeout(main, 0);
