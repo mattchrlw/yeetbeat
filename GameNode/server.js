@@ -33,6 +33,15 @@ cloak.configure({
     chat: function(msg, user) {
       user.getRoom().messageMembers('chat', msg);
     },
+
+
+
+
+    checkAnswer: function(arg, user) {
+      user.getRoom();
+
+    },
+    ////////////////////////////////////////////
     joinLobby: function(arg, user) {
       cloak.getLobby().addMember(user);
       user.message('joinLobbyResponse');
@@ -98,6 +107,12 @@ cloak.configure({
 
 
       */
+      this.playlist;
+      this.amountSongs;
+      this.scores = {playerid: x, score: y};
+      this.songlength;
+      this.modifiers;
+
       console.log(cloak.getRooms(true));
       console.log("Room Initation " + this.name + " " + this.id);
     },

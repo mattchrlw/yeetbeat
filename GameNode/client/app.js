@@ -10,12 +10,14 @@
 //var counter = document.querySelector('#counter');
 
 var createRoomButton = document.querySelector('#createlobby');
-var createRoomPart2 = document.querySelector('#openroom')
-var userNameInputCreate = document.querySelector('#nameboxcreate')
+var createRoomPart2 = document.querySelector('#openroom');
+var userNameInputCreate = document.querySelector('#nameboxcreate');
 
-var joinRoomName = document.querySelector('#joinroomname')
-var joinRoomCode = document.querySelector('#joinroomcode')
-var joinRoomButton = document.querySelector('#joinroombutton')
+var joinRoomName = document.querySelector('#joinroomname');
+var joinRoomCode = document.querySelector('#joinroomcode');
+var joinRoomButton = document.querySelector('#joinroombutton');
+var answerSubmit = document.querySelector('#answersubmit');
+
 
 cloak.configure({
   messages: {
@@ -71,6 +73,7 @@ cloak.configure({
         waitingForPlayerElem.style.display = 'none';
       }
     },
+    submitAnswer: function ()
     //
     'roomCreated': function (result) {
       console.log(result.success ? 'room join success' : 'room join failure');
@@ -157,6 +160,11 @@ createRoomPart2.addEventListener('click', (function (e) {
   console.log('clicked make new room button');
   console.log(`username "${userNameInputCreate.value}"`);
 
+  cloak.message('createRoom', userNameInputCreate.value);
+  cloak.message('listUsers');
+}));
+answerSubmit.addEventListener('click', (function (e) {
+  console.log('clicked submit answer');
   cloak.message('createRoom', userNameInputCreate.value);
   cloak.message('listUsers');
 }));
