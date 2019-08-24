@@ -30,7 +30,7 @@ window.addEventListener('popstate', function (ev) {
 /**
  * Changes the active view to the given view, hiding other views.
  * Shows/hides back button depending on if page is home page.
- * 
+ *
  * @param {string} id View ID (without hash)
  */
 function changeView(id) {
@@ -47,7 +47,7 @@ function _showView(id) {
     const next = document.querySelector('#' + id);
     next.classList.add('active');
     next.style.animation = 'fadeIn 0.2s ease forwards';
-    
+
     // fire handler if defined
     if (viewHandlers[id]) {
         console.log("... firing event handler");
@@ -92,7 +92,7 @@ function startSong(songDetails) {
 }
 
 function initGame() {
-    startSong({duration: 100000});
+    startSong({duration: 10000});
 }
 
 function loadAutoComp() {
