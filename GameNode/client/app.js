@@ -93,8 +93,9 @@ cloak.configure({
       if (result.success) {
         //game.room.id = result.roomId;
         //game.begin();
-        console.log(result.roomId + " " + result.roomName);
-        console.log("ahfsdgagkhdfkhgadsfjgasdfjhafsd");
+        console.log("Room Information" + result.roomId + " " + result.roomName);
+        document.getElementById("room-code").innerHTML = result.roomId;
+
       }
     },
     //
