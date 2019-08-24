@@ -8,8 +8,7 @@ var clientPort = 8080;
 var serverPort = 8090;
 
 var sendLobbyCount = function(arg) {
-  this.messageMembers('userCount', this.getMembers().length);
-  this.messageMembers('chat', "succ my weewee");
+  this.messageMembers('chat', "for lobby");
 };
 
 cloak.configure({

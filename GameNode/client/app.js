@@ -9,7 +9,8 @@
 //var messages = document.querySelector('#messages');
 //var counter = document.querySelector('#counter');
 
-var createLobbyButton = document.querySelector('#createlobby');
+var createRoomButton = document.querySelector('#createlobby');
+var createRoomPart2 = document.querySelector('#openroom')
 
 
 cloak.configure({
@@ -94,7 +95,7 @@ cloak.configure({
         //game.room.id = result.roomId;
         //game.begin();
         console.log("Room Information" + result.roomId + " " + result.roomName);
-        document.getElementById("room-code").innerHTML = result.roomId;
+        document.getElementById("room-code").innerHTML = result.roomName;
 
       }
     },
@@ -172,13 +173,19 @@ lobbyForm.addEventListener('submit', function(e) {
   console.log(cloak.currentUser());
 });
 */
-createLobbyButton.addEventListener('click', (function(e) {
+createRoomButton.addEventListener('click', (function(e) {
   cloak.message('createRoom', "1234" );
     console.log('New button clicked');
 
 }));
 
+createRoomPart2.addEventListener('click', (function(e) {
 
+  // SETS USERS NAME AND ADDS TO LOBBY
+  cloak.message('chat', "1234" );
+    console.log('New button clicked');
+
+}));
 
 
 
