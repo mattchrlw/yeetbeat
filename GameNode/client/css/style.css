@@ -143,3 +143,11 @@ body {
     font-size: 2em;
     text-align: center;
 }
+
+.circle {
+    padding: 1em;
+}
+
+.circle-text {
+    font-size: 4em;
+}

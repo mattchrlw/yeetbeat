@@ -1,17 +1,20 @@
 /* global cloak */
 
-var form = document.querySelector('#input-form');
-var input = document.querySelector('#input');
+//var form = document.querySelector('#input-form');
+//var input = document.querySelector('#input');
 
-var lobbyForm = document.querySelector('#lobby-form');
-var lobbyInput = document.querySelector('#lobby-input');
+//var lobbyForm = document.querySelector('#lobby-form');
+//var lobbyInput = document.querySelector('#lobby-input');
 
-var messages = document.querySelector('#messages');
-var counter = document.querySelector('#counter');
+//var messages = document.querySelector('#messages');
+//var counter = document.querySelector('#counter');
+
+var createLobbyButton = document.querySelector('#createlobby');
+
 
 cloak.configure({
   messages: {
-    chat: function(msg) {
+    /*chat: function(msg) {
       var message = document.createElement('div');
       message.textContent = msg;
       message.className = 'msg';
@@ -19,14 +22,14 @@ cloak.configure({
       messages.scrollTop = messages.scrollHeight;
     },
     userCount: function(count) {
-      counter.textContent = count;
-    },
+      //counter.textContent = count;
+    },*/
     'joinLobbyResponse': function(success) {
       console.log('joined lobby');
       game.refreshLobby();
     },
     //
-    'refreshLobby': function(data) {
+    /*'refreshLobby': function(data) {
       var users = data.users;
       var inLobby = data.inLobby;
 
@@ -62,7 +65,7 @@ cloak.configure({
           roomListElement.innerHTML += '<li>' + escape(room.name) + ' (' + room.users.length + '/' + room.size + ') <a href="#" onclick="game.joinRoom(\'' + room.id  + '\')">join</a><li class="indented">' + room.users[0].name + '</li></li>';
         });
       roomListElement.innerHTML += '</ul>';
-    },
+    },*/
 
     'joinRoomResponse': function(result) {
       if (result.success) {
@@ -144,6 +147,7 @@ cloak.configure({
   }
 });
 
+/*
 form.addEventListener('submit', function(e) {
   e.preventDefault();
   var msg = input.value;
@@ -163,5 +167,15 @@ lobbyForm.addEventListener('submit', function(e) {
   console.log(cloak.getUsers());
   console.log(cloak.currentUser());
 });
+*/
+createLobbyButton.addEventListener('click', (function(e) {
+  console.log('ASUDGAKSJGDJKASGDKJHASGDJKADSG');
+}));
+
+
+
+
+
+
 
 cloak.run('http://130.102.176.91:8090');
