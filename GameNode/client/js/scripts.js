@@ -93,7 +93,7 @@ function startSong(songDetails) {
 }
 
 function initGame() {
-    debugger;
+    // debugger;
     startSong({duration: 10000});
     var random = Math.floor(Math.random() * (youtubeArr.length-0.001));
     var result = youtubeArr[random];
@@ -101,14 +101,15 @@ function initGame() {
     fetch("http://localhost:8070/downloadYoutube/"+encodeURIComponent("https://www.youtube.com/watch?v="+result.video_id))
         .then(data => data.json())
         .then(function(filename) {
-            var sound = new Pizzicato.Sound({ 
+            /*var sound = new Pizzicato.Sound({ 
                 source: 'file',
                 options: { path: filename }
             }, function() {
                 //console.log('sound file loaded!');
-            });
+            });*/
+            var sound = new Audio(filename);
             sound.play();
-            youtubeArr.splice(random, 1);
+            //youtubeArr.splice(random, 1);
         });
 }
 
@@ -120,6 +121,7 @@ function loadAutoComp() {
                 //problem send help
             }
             else {
+                console.log("Completion loaded.")
                 var alist = [];
                 youtubeArr = songtitles;
                 songtitles.forEach(function(item){

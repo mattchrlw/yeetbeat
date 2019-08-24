@@ -31,7 +31,10 @@ async function downloadYoutubeVid(url) {
   });*/
   var rand = Math.random();
   video.pipe(fs.createWriteStream("client/media/video" + rand.toString() + ".mp3"));
-  return "/media/video" + rand.toString() + ".mp3";
+  video.on("end", function() {
+    console.log("doneski");
+  })
+  return "/media/video" + rand.toString() + ".mp3"; //attach to game
 }
  
 /*async function downloadPlaylist(url) {
