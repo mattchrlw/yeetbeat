@@ -67,12 +67,12 @@
             <h1 class="display-bold">Join</h1>
             <p>Here we insert a list of the players in the lobby. After people have joined, click start game.</p>
             <div class="input-group mb-3">
-                <input type="text" class="form-control" id="nameboxjoin" placeholder="Enter name" aria-label="Enter name">
+                <input type="text" id="joinroomname" class="form-control" id="nameboxjoin" placeholder="Enter name" aria-label="Enter name">
             </div>
             <div class="input-group mb-3">
-                <input type="text" class="form-control mono" maxlength=5 placeholder="Enter code" aria-label="Enter code">
+                <input type="text" id="joinroomcode" class="form-control mono" maxlength=5 placeholder="Enter code" aria-label="Enter code">
             </div>
-            <a onclick="javascript:changeView('room')" class="btn btn-lg btn-block"
+            <a id="joinroombutton" onclick="javascript:changeView('room')" class="btn btn-lg btn-block"
                 style="background-color: #42A5F5">Join Room</a>
         </div>
         <div class="padding hideable" id="settings">
