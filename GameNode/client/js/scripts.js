@@ -1,13 +1,35 @@
+/** Progress circle for song progress. */
+var circle;
+
+/** Handler functions fired when the view is changed to a particular view. */
+const viewHandlers = {
+    game: initGame,
+}
+
+/**
+ * Changes the active view to the given view, hiding other views.
+ * Shows/hides back button depending on if page is home page.
+ * 
+ * @param {string} id View ID (without hash)
+ */
 function changeView(id) {
+    console.log("Changing view to " + id);
+
     const old = document.querySelector('.active');
-    const next = document.querySelector('#' + id);
-
-    next.classList.add('active');
-    next.style.animation = 'fadeIn 0.2s ease forwards';
-
     old.style.animation = 'fadeOut 0.2s ease forwards';
     old.classList.remove('active');
 
+    const next = document.querySelector('#' + id);
+    next.classList.add('active');
+    next.style.animation = 'fadeIn 0.2s ease forwards';
+    
+    // fire handler if defined
+    if (viewHandlers[id]) {
+        console.log("... firing event handler");
+        viewHandlers[id]();
+    }
+
+    // TODO: use history API.
     const back = document.querySelector('#back-btn');
     if (id !== 'home') {
         back.classList.remove('invisible');
@@ -16,10 +38,12 @@ function changeView(id) {
     }
 }
 
-var circle;
 
-function main() {
-    const duration = 10000;
+function startSong(songDetails) {
+    if (circle) {
+        circle.destroy();
+    }
+    const duration = songDetails.duration;
     circle = new ProgressBar.Circle('.circle', {
         strokeWidth: 6,
         easing: 'linear',
@@ -40,6 +64,14 @@ function main() {
     });
     circle.set(1);
     circle.animate(0);  // Number from 0.0 to 1.0
+}
+
+function initGame() {
+    startSong({duration: 10000});
+}
+
+function main() {
+    // pass
 }
 
 setTimeout(main, 0);
