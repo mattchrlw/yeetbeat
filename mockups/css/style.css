@@ -142,3 +142,11 @@ body {
     font-family: 'Roboto Mono', monospace !important;
     font-size: 2em;
 }
+
+.circle {
+    padding: 1em;
+}
+
+.circle-text {
+    font-size: 4em;
+}
