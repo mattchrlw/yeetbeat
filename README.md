@@ -3,7 +3,7 @@
 > YeetBeat is a music guessing game for the whole family to enjoy! Guess songs from a short snippet.
 
 ## Ideas 
-- Filter by year,s genre, anything from API
+- Filter by years, genre, anything from API
 - Friends playlists
 - Points accumulated - use points to purchase wildcards
 - Link to Spotify playlists
