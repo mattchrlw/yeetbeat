@@ -20,13 +20,45 @@
     <div class="container">
             
         <!-- Image and text -->
-        <div class="padding">
+        <div class="padding hideable" id="home">
             <h1 class="display-bold">Guess the song!</h1> 
             <div class="row">
-            <a href="pages/lobby.html" class="btn btn-lg btn-block" style="background-color: #9CCC65">Join</a>
-            <a href="pages/playlists.html" class="btn btn-lg btn-block" style="background-color: #42A5F5">New</a>
+            <a href="pages/lobby.html" class="btn btn-lg btn-tall btn-block" style="background-color: #42A5F5">&rarr;&nbsp; Join</a>
+            <a href="pages/playlists.html" class="btn btn-lg btn-tall btn-block" style="background-color: #9CCC65">+&nbsp; New</a>
             <p class="minimal-text center">Made by Epic Gamers</p>
             </div>
+        </div>
+        <div class="padding hideable" id="playlists">
+            <h1 class="display-bold">Playlists</h1> 
+            <p>This page shows a list of the songs in the playlist. You can add songs or whatever. After done, go to lobby</p>
+            <a href="lobby.html" class="btn btn-lg btn-block" style="background-color: #42A5F5">Lobby</a>
+            <a href="settings.html" class="btn btn-lg btn-block" style="background-color: #CCCCCC">Settings</a>
+        </div>
+        <div class="padding hideable" id="lobby">
+            <h1 class="display-bold">Lobby</h1>
+            <p>Here we insert a list of the players in the lobby. After people have joined, click start game.</p>
+            <a href="game.html" class="btn btn-lg btn-block" style="background-color: #9CCC65">Start Game</a>
+        </div>
+        <div class="padding hideable" id="settings">
+            <h1 class="display-bold">Settings</h1>
+            <p>This page shows some difficulty settings like nightcore mode and shit</p>
+            <a href="playlists.html" class="btn btn-lg btn-block" style="background-color: #CCCCCC">Go back to playlist</a>
+        </div>
+        <div class="padding hideable" id="results">
+            <h1 class="display-bold">Current results:</h1> 
+            <p>Keep going to game</p>
+            <a href="game.html" class="btn btn-lg btn-block" style="background-color: #9CCC65">Next round</a>
+            <a href="gameover.html" class="btn btn-lg btn-block" style="background-color: #ef5350">End game</a>
+        </div>
+        <div class="padding hideable" id="gameover">
+            <h1 class="display-bold">Game over!</h1>
+            <p>This page shows the winner. After this, click the bottom button to go to the home page.</p>
+            <a href="../index.html" class="btn btn-lg btn-block btn-secondary">Start again</a>
+        </div>
+        <div class="padding hideable" id="game">
+            <h1 class="display-bold">The game!</h1>
+            <p>Keep going to results</p>
+            <a href="results.html" class="btn btn-lg btn-block" style="background-color: #9CCC65">Finish round</a>
         </div>
     </div>
 </body>

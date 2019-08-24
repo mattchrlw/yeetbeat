@@ -11,11 +11,12 @@
 <body>
     <nav class="navbar navbar-dark" style="background-color: #ef5350; height: 70px">
         <div class="center">
-        <a class="back-btn" href="../index.html">&lt;-&nbsp;&nbsp;</a>
-        <a class="navbar-brand" href="#">
+        <a class="back-btn" onclick="window.history.go(-1)">&#8592;&nbsp;&nbsp;</a>
+        <a class="navbar-brand" href="../index.html">
         <img src="../img/logosmall.png" width="30" height="30" class="d-inline-block align-top" alt="">
         <strong>YeetBeat</strong>
         </a>
+        <a class="back-btn invisible" href="../index.html">&nbsp;&nbsp;&uparrow;</a>
         </div>
     </nav>
     <div class="container">
@@ -23,6 +24,8 @@
         <!-- Image and text -->
         <div class="padding">
             <h1 class="display-bold">Game over!</h1>
+            <p>This page shows the winner. After this, click the bottom button to go to the home page.</p>
+            <a href="../index.html" class="btn btn-lg btn-block btn-secondary">Start again</a>
         </div>
     </div>
 </body>

@@ -46,7 +46,7 @@
 }
 
 body {
-    font-family: 'Roboto', sans-serif !important;    
+    font-family: 'Inter', sans-serif !important;    
 }
 
 .container {
@@ -56,6 +56,7 @@ body {
 .minimal-text {
     font-size: 0.75em;
     color: #666666;
+    margin: 10px;
 }
 
 .center { 
@@ -70,7 +71,7 @@ body {
 .display-bold {
     font-weight: 900;
     font-size: 2em;
-    letter-spacing: -0.05em;
+    letter-spacing: -0.04em;
     text-align: center;
 }
 
@@ -78,8 +79,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px;
     color: white;
+    height: 50px;
+    font-size: 1.25em;
+}
+
+.btn-tall {
     height: 150px;
     font-size: 1.5em;
 }
@@ -88,11 +93,10 @@ body {
     color: white;
     font-weight: bold;
     text-decoration: none;
-    font-size: 1.5em;
 }
 
 .back-btn {
-    color: white;
+    color: white !important;
     font-size: 1.5em;
     font-weight: bold;
 }
@@ -101,4 +105,10 @@ body {
     color: white;
     font-weight: bold;
     text-decoration: none;
+    cursor: pointer;
+}
+
+.invisible {
+    /* visibility: none; */
+    font-weight: bold;
 }
