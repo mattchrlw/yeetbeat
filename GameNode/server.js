@@ -30,10 +30,21 @@ async function downloadYoutubeVid(url) {
     createdFileName = info._filename;
   });*/
   var rand = Math.random();
-  video.pipe(fs.createWriteStream("client/media/video" + rand.toString() + ".mp3"));
+  console.log("hi");
   video.on("end", function() {
     console.log("doneski");
-  })
+  });
+  var pos = 0;
+  video.on('data', function data(chunk) {
+    pos += chunk.length;
+    // `size` should not be 0 here.
+    if (1) {
+      process.stdout.cursorTo(0);
+      process.stdout.clearLine(1);
+      process.stdout.write(pos+ ' pos');
+    }
+  });
+  video.pipe(fs.createWriteStream("client/media/video" + rand.toString() + ".mp3"));
   return "/media/video" + rand.toString() + ".mp3"; //attach to game
 }
  
@@ -80,7 +91,7 @@ async function getPlayList(url) {
 
 app.get('/downloadYoutube/:url', async function (req, res) {
   const data = await downloadYoutubeVid(req.params.url);
-  res.json(data);
+  res.pipe(fs.createReadStream('client' + data));
 })
 
 app.get('/getPlaylist/:url', async function (req, res) {
