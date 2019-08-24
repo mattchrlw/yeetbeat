@@ -150,3 +150,8 @@ body {
 .circle-text {
     font-size: 4em;
 }
+
+.main-column {
+    max-width: 400px;
+    margin: 0 auto;
+}
