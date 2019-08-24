@@ -11,7 +11,7 @@
 
 var createRoomButton = document.querySelector('#createlobby');
 var createRoomPart2 = document.querySelector('#openroom')
-
+var userNameInputCreate = document.querySelector('#nameboxcreate')
 
 cloak.configure({
   messages: {
@@ -29,44 +29,6 @@ cloak.configure({
       console.log('joined lobby');
       game.refreshLobby();
     },
-    //
-    /*'refreshLobby': function(data) {
-      var users = data.users;
-      var inLobby = data.inLobby;
-
-      var lobbyElement = document.getElementById('lobby'),
-        lobbyListElement = document.getElementById('lobby-list'),
-        newRoomUIElement = document.getElementById('new-room-ui'),
-        roomsElement = document.getElementById('rooms'),
-        roomListElement = document.getElementById('room-list');
-
-      console.log('other users in room', users);
-      lobbyElement.style.display = 'block';
-      lobbyListElement.style.display = 'block';
-      newRoomUIElement.style.display = 'block';
-      roomsElement.style.display = 'block';
-      roomListElement.style.display = 'block';
-      lobbyListElement.innerHTML = '<ul>';
-      _.chain(users)
-        .each(function(user) {
-          if (inLobby) {
-            lobbyListElement.innerHTML += '<li>' + escape(user.name) + '</li>';
-          }
-          else {
-            lobbyListElement.innerHTML += '<li>' + escape(user.name) + ' (' + data.roomCount + '/' + data.roomSize + ')</li>';
-          }
-        });
-      lobbyListElement.innerHTML += '</ul>';
-    },
-    //
-    'listRooms': function(rooms) {
-      var roomListElement = document.getElementById('room-list');
-      roomListElement.innerHTML = '<ul>';
-        _.each(rooms, function(room) {
-          roomListElement.innerHTML += '<li>' + escape(room.name) + ' (' + room.users.length + '/' + room.size + ') <a href="#" onclick="game.joinRoom(\'' + room.id  + '\')">join</a><li class="indented">' + room.users[0].name + '</li></li>';
-        });
-      roomListElement.innerHTML += '</ul>';
-    },*/
 
     'joinRoomResponse': function(result) {
       if (result.success) {
@@ -182,8 +144,15 @@ createRoomButton.addEventListener('click', (function(e) {
 createRoomPart2.addEventListener('click', (function(e) {
 
   // SETS USERS NAME AND ADDS TO LOBBY
-  cloak.message('chat', "1234" );
-    console.log('New button clicked');
+  //user.name = nameboxcreate.value;
+  console.log(nameboxcreate.value);
+  nameboxcreate.value = '';
+    console.log(' -- Room Button 2 clicked');
+    //console.log(' -- New user name ' + user.name);
+    //    console.log(cloak.currentUser());
+        console.log(this.currentUser());
+
+
 
 }));
 
