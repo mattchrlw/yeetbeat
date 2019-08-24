@@ -141,4 +141,5 @@ body {
 .mono {
     font-family: 'Roboto Mono', monospace !important;
     font-size: 2em;
+    text-align: center;
 }

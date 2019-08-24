@@ -33,10 +33,10 @@
             <img class="home-image" src="img/logosmall.png">
             <h1 class="display-bold">Guess the song!</h1>
             <div class="row">
-                <a onclick="javascript:changeView('lobby')" class="btn btn-lg btn-tall btn-block"
+                <a onclick="javascript:changeView('join')" class="btn btn-lg btn-tall btn-block"
                     style="background-color: #42A5F5">&rarr;&nbsp; Join</a>
                 <a onclick="javascript:changeView('playlists')" class="btn btn-lg btn-tall btn-block"
-                    style="background-color: #9CCC65">+&nbsp; New</a>
+                    style="background-color: #9CCC65" id="createlobby">+&nbsp; New</a>
                 <p class="minimal-text center">Made by Epic Gamers</p>
             </div>
         </div>
@@ -44,19 +44,31 @@
             <h1 class="display-bold">Playlists</h1>
             <p>This page shows a list of the songs in the playlist. You can add songs or whatever. After done, go to
                 lobby</p>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter name" aria-label="Enter name">
+            </div>
             <a onclick="javascript:changeView('lobby')" class="btn btn-lg btn-block"
-                style="background-color: #42A5F5">Lobby</a>
+                style="background-color: #42A5F5">Open Lobby</a>
             <a onclick="javascript:changeView('settings')" class="btn btn-lg btn-block"
                 style="background-color: #CCCCCC">Settings</a>
         </div>
         <div class="padding hideable" id="lobby">
             <h1 class="display-bold">Lobby</h1>
+            <p>Bruh</p>
+            <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block"
+                style="background-color: #9CCC65">Start Game</a>
+        </div>
+        <div class="padding hideable" id="join">
+            <h1 class="display-bold">Join</h1>
             <p>Here we insert a list of the players in the lobby. After people have joined, click start game.</p>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Enter name" aria-label="Enter name">
+            </div>
             <div class="input-group mb-3">
                 <input type="text" class="form-control mono" placeholder="Enter code" aria-label="Enter code">
             </div>
-            <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block"
-                style="background-color: #9CCC65">Start Game</a>
+            <a onclick="javascript:changeView('lobby')" class="btn btn-lg btn-block"
+                style="background-color: #42A5F5">Join Lobby</a>
         </div>
         <div class="padding hideable" id="settings">
             <h1 class="display-bold">Settings</h1>
