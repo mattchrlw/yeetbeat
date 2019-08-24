@@ -1,4 +1,10 @@
 function changeView(id) {
-    document.querySelector('.active').classList.remove('active');
-    document.querySelector('#' + id).classList.add('active');    
+    const old = document.querySelector('.active');
+    const next = document.querySelector('#' + id);
+    
+    next.classList.add('active');
+    next.style.animation = 'fadeIn 0.5s ease forwards';
+    
+    old.style.animation = 'fadeOut 0.5s ease forwards';
+    old.classList.remove('active');
 }
