@@ -93,10 +93,19 @@ function startSong(songDetails) {
 
 function initGame() {
     startSong({duration: 10000});
-    fetch("http://localhost:8070/downloadYoutube/"+encodeURIComponent(document.getElementById("playlistURLvalue").value))
+    var max = arr.length;
+    var min = 0;
+    var random = Math.floor(Math.random() * (+max - +min)) + +min
+    fetch("http://localhost:8070/downloadYoutube/"+encodeURIComponent("https://www.youtube.com/watch?v="+"").value))
         .then(data => data.json())
         .then(function(filename) {
-            
+            var sound = new Pizzicato.Sound({ 
+                source: 'file',
+                options: { path: '..'+filename }
+            }, function() {
+                //console.log('sound file loaded!');
+            });
+            sound.play();
         });
 }
 
@@ -109,6 +118,7 @@ function loadAutoComp() {
             }
             else {
                 var alist = [];
+                var list2 = document.getElementById("arrOfVideoIds");
                 songtitles.forEach(function(item){
                     alist.push(item.title);
                 });
