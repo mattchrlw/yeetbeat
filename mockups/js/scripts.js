@@ -3,8 +3,8 @@ function changeView(id) {
     const next = document.querySelector('#' + id);
     
     next.classList.add('active');
-    next.style.animation = 'fadeIn 0.5s ease forwards';
+    next.style.animation = 'fadeIn 0.25s ease forwards';
     
-    old.style.animation = 'fadeOut 0.5s ease forwards';
+    old.style.animation = 'fadeOut 0.25s ease forwards';
     old.classList.remove('active');
 }
