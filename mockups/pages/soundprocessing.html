@@ -1,15 +1,14 @@
 <script src="../scripts/Pizzicato/Pizzicato.js"></script>
 
 <button onclick="playAudio()">play</button>
-<button onclick="playAudio('bassboost')">play</button>
-<button onclick="playAudio('earrape')">play</button>
+<button onclick="playAudio('earrape')">earrape</button>
 <button onclick="stopAudio()">stop</button>
 
 <script>
     // IMPORTING THE SOUND FILE
     var sound = new Pizzicato.Sound({
         source: 'file',
-        options: { path: '../music/Hello.mp3' }
+        options: { path: '../music/wala-cam.mp3' }
     }, function() {
         console.log('sound file loaded!');
     });
@@ -17,12 +16,12 @@
     //  EFFECTS
     var bassboost = new Pizzicato.Effects.LowPassFilter({
         frequency: 800,
-        peak: 10
+        peak: 5
     });
     var earrape = new Pizzicato.Effects.RingModulator({
         speed: 30,
-        distortion: 1,
-        mix: 0.5
+        distortion: 2,
+        mix: 0.8
     });
 
     // PLAYING THE AUDIO
