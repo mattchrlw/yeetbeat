@@ -33,7 +33,7 @@ cloak.configure({
 
     listRooms: function(arg, user) {
       user.message('listRooms', cloak.getRooms(true));
-      console.log(cloak.getRooms(true));
+      console.log("List Rooms " + cloak.getRooms(true));
     },
 
     listUsers: function(arg, user) {
@@ -46,7 +46,12 @@ cloak.configure({
     },
     createRoom: function(arg, user) {
       var room = cloak.createRoom(Math.floor(Math.random()*100000-1), 1000);
-      
+      var success = room.addMember(user);
+      user.message('roomCreated', {
+        success: success,
+        roomId: room.id,
+        roomName: room.name
+      });
 
     }
 

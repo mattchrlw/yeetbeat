@@ -91,8 +91,10 @@ cloak.configure({
     'roomCreated': function(result) {
       console.log(result.success ? 'room join success' : 'room join failure');
       if (result.success) {
-        game.room.id = result.roomId;
-        game.begin();
+        //game.room.id = result.roomId;
+        //game.begin();
+        console.log(result.roomId + " " + result.roomName);
+        console.log("ahfsdgagkhdfkhgadsfjgasdfjhafsd");
       }
     },
     //
@@ -119,7 +121,8 @@ cloak.configure({
 
     'roomCreated': function(rooms) {
       console.log('created a room', rooms);
-      game.refreshLobby();
+
+      //game.refreshLobby();
     },
 
     'roomDeleted': function(rooms) {
@@ -129,7 +132,7 @@ cloak.configure({
 
     'roomMemberJoined': function(user) {
       console.log('room member joined', user);
-      game.refreshWaiting();
+      //game.refreshWaiting();
     },
 
     'roomMemberLeft': function(user) {
@@ -169,7 +172,9 @@ lobbyForm.addEventListener('submit', function(e) {
 });
 */
 createLobbyButton.addEventListener('click', (function(e) {
-  console.log('ASUDGAKSJGDJKASGDKJHASGDJKADSG');
+  cloak.message('createRoom', "1234" );
+    console.log('New button clicked');
+
 }));
 
 
