@@ -44,6 +44,11 @@ cloak.configure({
         roomSize: user.room.size
       });
     },
+    createRoom: function(arg, user) {
+      var room = cloak.createRoom(Math.floor(Math.random()*100000-1), 1000);
+      
+
+    }
 
   },
 
