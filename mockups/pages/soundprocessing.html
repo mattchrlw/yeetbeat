@@ -1,7 +1,6 @@
 <script src="../scripts/Pizzicato/Pizzicato.js"></script>
 
 <button onclick="playAudio()">play</button>
-<button onclick="playAudio('tremolo')">play</button>
 <button onclick="playAudio('bassboost')">play</button>
 <button onclick="playAudio('earrape')">play</button>
 <button onclick="stopAudio()">stop</button>
@@ -16,13 +15,8 @@
     });
 
     //  EFFECTS
-    var tremolo = new Pizzicato.Effects.Tremolo({
-        speed: 7,
-        depth: 0.8,
-        mix: 0.8
-    });
     var bassboost = new Pizzicato.Effects.LowPassFilter({
-        frequency: 400,
+        frequency: 800,
         peak: 10
     });
     var earrape = new Pizzicato.Effects.RingModulator({
