@@ -94,22 +94,24 @@ function startSong(songDetails) {
 
 function initGame() {
     // debugger;
-    startSong({duration: 10000});
     var random = Math.floor(Math.random() * (youtubeArr.length-0.001));
     var result = youtubeArr[random];
+    console.log(result);
     
     fetch("http://localhost:8070/downloadYoutube/"+encodeURIComponent("https://www.youtube.com/watch?v="+result.video_id))
         .then(data => data.json())
         .then(function(filename) {
-            /*var sound = new Pizzicato.Sound({ 
-                source: 'file',
-                options: { path: filename }
-            }, function() {
-                //console.log('sound file loaded!');
-            });*/
+            // var sound = new Pizzicato.Sound({ 
+            //     source: 'file',
+            //     options: { path: filename }
+            // }, function() {
+            //     //console.log('sound file loaded!');
+            // });
             var sound = new Audio(filename);
             sound.play();
-            //youtubeArr.splice(random, 1);
+            console.log("playing song " + filename);
+            youtubeArr.splice(random, 1);
+            startSong({duration: 10000});
         });
 }
 

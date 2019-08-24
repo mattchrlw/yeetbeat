@@ -20,9 +20,17 @@ app.use(function(req, res, next) {
   next();
 });
 
-async function downloadYoutubeVid(url) {
-  var video = await youtubedl(url, ['-f 140'],
-    { cwd: __dirname });
+async function downloadYoutubeVid(url, flag) {
+  var video = await youtubedl.exec(url, ['-g', '-f', '140'], { cwd: __dirname }, function(err, output)  {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    // console.log(JSON.stringify(output));
+    flag.url = output[0];
+    flag.done = 1;
+  });
+  console.log(video);
   var createdFileName = "";
 
   // Will be called when the download starts.
@@ -31,20 +39,7 @@ async function downloadYoutubeVid(url) {
   });*/
   var rand = Math.random();
   console.log("hi");
-  video.on("end", function() {
-    console.log("doneski");
-  });
   var pos = 0;
-  video.on('data', function data(chunk) {
-    pos += chunk.length;
-    // `size` should not be 0 here.
-    if (1) {
-      process.stdout.cursorTo(0);
-      process.stdout.clearLine(1);
-      process.stdout.write(pos+ ' pos');
-    }
-  });
-  video.pipe(fs.createWriteStream("client/media/video" + rand.toString() + ".mp3"));
   return "/media/video" + rand.toString() + ".mp3"; //attach to game
 }
  
@@ -89,9 +84,15 @@ async function getPlayList(url) {
   }
 }
 
+const delay = time => new Promise(res=>setTimeout(res,time));
 app.get('/downloadYoutube/:url', async function (req, res) {
-  const data = await downloadYoutubeVid(req.params.url);
-  res.pipe(fs.createReadStream('client' + data));
+  const flag = {};
+  const data = await downloadYoutubeVid(req.params.url, flag);
+  while (!flag.done) {
+    await delay(200);
+  }
+  console.log('returning url: ' + flag.url);
+  res.json(flag.url);
 })
 
 app.get('/getPlaylist/:url', async function (req, res) {
