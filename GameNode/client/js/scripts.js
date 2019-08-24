@@ -1,12 +1,15 @@
 function changeView(id) {
     const old = document.querySelector('.active');
     const next = document.querySelector('#' + id);
+    const show = document.querySelector('#back-btn');
 
     next.classList.add('active');
     next.style.animation = 'fadeIn 0.2s ease forwards';
 
     old.style.animation = 'fadeOut 0.2s ease forwards';
     old.classList.remove('active');
+
+    show.style.visibility = 'true';
 }
 
 var circle;
