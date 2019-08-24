@@ -93,22 +93,28 @@ function startSong(songDetails) {
 
 function initGame() {
     startSong({duration: 10000});
+    fetch("http://localhost:8070/downloadYoutube/"+encodeURIComponent(document.getElementById("playlistURLvalue").value))
+        .then(data => data.json())
+        .then(function(filename) {
+            
+        });
 }
 
 function loadAutoComp() {
     fetch("http://localhost:8070/getPlaylist/"+encodeURIComponent(document.getElementById("playlistURLvalue").value))
         .then(data => data.json())
         .then(function(songtitles) {
-            debugger;
             if (songtitles === 'ERROR: Link invalid') {
                 //problem send help
             }
             else {
-                var list = document.getElementById('songs');
-                arr.forEach(function(item){
-                    var option = document.createElement('option');
-                    option.value = item.title;
-                    list.appendChild(option);
+                var alist = [];
+                songtitles.forEach(function(item){
+                    alist.push(item.title);
+                });
+                var input = document.getElementById("autocomp");
+                new Awesomplete(input, {
+                    list: alist
                 });
             }
         });

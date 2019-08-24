@@ -29,7 +29,8 @@ async function downloadYoutubeVid(url) {
   video.on('info', function (info) {
     createdFileName = info._filename;
   });
-  video.pipe(fs.createWriteStream(createdFileName));
+  video.pipe(fs.createWriteStream("/media/" + createdFileName));
+  return "/media/" +createdFileName;
 }
  
 /*async function downloadPlaylist(url) {
@@ -72,6 +73,11 @@ async function getPlayList(url) {
     return 'ERROR: Link invalid';
   }
 }
+
+app.get('/downloadYoutube/:url', async function (req, res) {
+  const data = await downloadYoutubeVid(req.params.url);
+  res.json(data);
+})
 
 app.get('/getPlaylist/:url', async function (req, res) {
   const data = await getPlayList(req.params.url);
