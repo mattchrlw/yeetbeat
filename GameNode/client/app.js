@@ -17,8 +17,6 @@ var joinRoomName = document.querySelector('#joinroomname')
 var joinRoomCode = document.querySelector('#joinroomcode')
 var joinRoomButton = document.querySelector('#joinroombutton')
 
-
-
 cloak.configure({
   messages: {
     /*chat: function (msg) {
@@ -35,83 +33,52 @@ cloak.configure({
       console.log('joined lobby');
       game.refreshLobby();
     },
-    /*'refreshLobby': function (data) {
-      var users = data.users;
-      var inLobby = data.inLobby;
-
-      var lobbyElement = document.getElementById('lobby'),
-        lobbyListElement = document.getElementById('lobby-list'),
-        newRoomUIElement = document.getElementById('new-room-ui'),
-        roomsElement = document.getElementById('rooms'),
-        roomListElement = document.getElementById('room-list');
-
-      console.log('other users in room', users);
-      lobbyElement.style.display = 'block';
-      lobbyListElement.style.display = 'block';
-      newRoomUIElement.style.display = 'block';
-      roomsElement.style.display = 'block';
-      roomListElement.style.display = 'block';
-      lobbyListElement.innerHTML = '<ul>';
-      _.chain(users)
-        .each(function (user) {
-          if (inLobby) {
-            //lobbyListElement.innerHTML += '<li>' + escape(user.name) + '</li>';
-          }
-          else {
-            lobbyListElement.innerHTML = users;
-
-            for (var i = 0; i < users.length; i++) {
-              lobbyListElement.innerHTML += users[i].name; vs
-            }
-
-          }
-        });
-      lobbyListElement.innerHTML += '</ul>';
-    },*/
     'refreshRoom': function (data) {
       var users = data.users;
-      var roomCount = data.roomCount;
+      var roomCount = data.count;
+      var UsersElement = document.getElementById('Users');
+      document.getElementById("room-code").textContent = data.room;
 
-    var UsersElement = document.getElementById('Users');
+      UsersElement.innerHTML = ''; // clears children of Users
 
-      console.log('other users in room', users);
+      console.log('refreshing room (with '+roomCount+' users): '+ users);
+      users.forEach(({id, name}) => {
+        const div = document.createElement('div');
+        div.className = 'room-user';
+        div.textContent = name;
+        UsersElement.appendChild(div);
+      });
 
-      for (var i = 0; i < users.length; i++) {
-        console.log(i);
-        console.log(users[i].name);
-        UsersElement.innerHTML += users[i].name;
+    }
+    ,
+    'joinRoomResponse': function (result) {
+      if (result.success) {
+        game.room.id = result.id;
+        game.begin();
+        game.refreshWaiting();
       }
-
-    }
-  },
-  'joinRoomResponse': function (result) {
-    if (result.success) {
-      game.room.id = result.id;
-      game.begin();
-      game.refreshWaiting();
-    }
-  },
-  //
-  refreshWaitingResponse: function (members) {
-    if (!members) {
-      return;
-    }
-    var waitingForPlayerElem = document.getElementById('waitingForPlayer');
-    if (members.length < 2) {
-      waitingForPlayerElem.style.display = 'block';
-    }
-    else {
-      waitingForPlayerElem.style.display = 'none';
-    }
-  },
-  //
-  'roomCreated': function (result) {
-    console.log(result.success ? 'room join success' : 'room join failure');
-    if (result.success) {
-      console.log("Room Information" + result.roomId + " " + result.roomName);
-      document.getElementById("room-code").innerHTML = result.roomName;
-
-    }
+    },
+    //
+    refreshWaitingResponse: function (members) {
+      if (!members) {
+        return;
+      }
+      var waitingForPlayerElem = document.getElementById('waitingForPlayer');
+      if (members.length < 2) {
+        waitingForPlayerElem.style.display = 'block';
+      }
+      else {
+        waitingForPlayerElem.style.display = 'none';
+      }
+    },
+    //
+    'roomCreated': function (result) {
+      console.log(result.success ? 'room join success' : 'room join failure');
+      if (result.success) {
+        console.log("Room Information " + result.roomId + " " + result.roomName);
+        document.getElementById("room-code").textContent = result.roomName;
+      }
+    },
   },
   //
   serverEvents: {
@@ -131,15 +98,6 @@ cloak.configure({
     'lobbyMemberLeft': function (user) {
       console.log('lobby member left', user);
       cloak.message('listUsers');
-    },
-
-    'roomCreated': function (rooms) {
-      console.log('created a room', rooms);
-      rooms.roomId.addMember(rooms.user);
-      console.log(rooms.room.getMembers());
-      console.log("adfjhasdkflhasdkjlfhaslkjdhfkljasdhflkjashdflkahsdlfkajsdfhattempted to add user");
-
-      //game.refreshLobby();
     },
 
     'roomDeleted': function (rooms) {
@@ -189,22 +147,18 @@ lobbyForm.addEventListener('submit', function(e) {
 });
 */
 joinRoomButton.addEventListener('click', (function (e) {
-
   var x = joinRoomCode.value;
-  console.log(x);
   var y = joinRoomName.value;
-  cloak.message('joinRoomFromName', { x, y }  );
-
-
+  console.log({x, y});
+  cloak.message('joinRoomFromName', { room: x, username: y });
 }));
 
 createRoomPart2.addEventListener('click', (function (e) {
-  console.log('New Room button clicked');
-  console.log(userNameInputCreate.value);
+  console.log('clicked make new room button');
+  console.log(`username "${userNameInputCreate.value}"`);
 
   cloak.message('createRoom', userNameInputCreate.value);
   cloak.message('listUsers');
-  console.log(userNameInputCreate.value);
 }));
 
-cloak.run('http://localhost');
+cloak.run('http://localhost:5000');

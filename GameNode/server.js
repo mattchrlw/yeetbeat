@@ -11,6 +11,22 @@ var sendLobbyCount = function(arg) {
 
 const server = connect().use(connect.static('./client')).listen(PORT);
 
+const rooms = {};
+
+function sendRefreshRoom(user) {
+  user.message('refreshRoom', {
+    users: user.room.getMembers(true),
+    room: user.room.name,
+    count: user.room.getMembers(true).length
+  });
+}
+
+function sendAllRefreshRoom(room) {
+  room.getMembers().forEach(user => {
+    sendRefreshRoom(user);
+  })
+}
+
 cloak.configure({
   express: server,
   messages: {
@@ -32,18 +48,21 @@ cloak.configure({
 
     listRooms: function(arg, user) {
       user.message('listRooms', cloak.getRooms(true));
-      console.log("List Rooms " + cloak.getRooms(true));
+      console.log("received list rooms " + cloak.getRooms(true));
     },
     //////////////////////////////////////////////
     listUsers: function(arg, user) {
-      user.message('refreshRoom', {
-        users: user.room.getMembers(true),
-        roomCount: user.room.getMembers().length
-      });
+      sendRefreshRoom(user);      
     },
     createRoom: function(arg, user) {
-      var room = cloak.createRoom(Math.floor(Math.random()*100000-1), 100);
-      user.name = arg
+      const roomNum = Math.floor(Math.random()*1000000-1);
+      var room = cloak.createRoom(roomNum, 100);
+      user.name = arg;
+
+      console.log("creating room " + roomNum + ' for ' + arg);
+      rooms[roomNum] = room;
+      console.log("all rooms: " + JSON.stringify(rooms));
+
       var success = room.addMember(user);
       user.message('roomCreated', {
         success: success,
@@ -52,20 +71,15 @@ cloak.configure({
       });
     },
     joinRoomFromName: function(arg,user)  {
-      var rooms = cloak.getRooms();
-      console.log(" ROOOMS " + rooms);
-      console.log(arg.x);
-      for (index = 0; index < rooms.length; ++index) {
-        console.log(" current index "  + rooms[index][1]);
-        if (rooms[index][1] == arg[0]) {
-          console.log("FOUND");
-          user.name = arg[1];
-          rooms[index].addMember(user);
-          break;
-        } else {
-          console.log('aihlsdfgaydsgfhadgfsdjf');
-        }
-      }
+      console.log("user joining room!");
+      // console.log("all rooms: " + JSON.stringify(rooms));
+
+      const room = rooms[arg.room];
+      user.name = arg.username;
+      room.addMember(user);
+
+      console.log("refreshing other users in room " + room.name);
+      sendAllRefreshRoom(room);
     }
 
   },
