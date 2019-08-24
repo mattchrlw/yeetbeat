@@ -14,6 +14,12 @@ const ypi = require('youtube-playlist-info');
 var clientPort = 8080;
 var serverPort = 8090;
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 async function downloadYoutubeVid(url) {
   var video = await youtubedl(url, ['-f 140'],
     { cwd: __dirname });
@@ -161,3 +167,7 @@ connect()
   .listen(clientPort);
 
 console.log('client running on on ' + clientPort);
+
+app.listen(8070, function () {
+  console.log('Example app listening on port 8070!');
+})

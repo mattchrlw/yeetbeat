@@ -96,8 +96,9 @@ function initGame() {
 }
 
 function loadAutoComp() {
-    fetch("/getPlaylist/"+encodeURIComponent(document.getElementById("playlistURLvalue").value))
-        .then( function(songtitles) {
+    fetch("http://localhost:8070/getPlaylist/"+encodeURIComponent(document.getElementById("playlistURLvalue").value))
+        .then(data => data.json())
+        .then(function(songtitles) {
             debugger;
             if (songtitles === 'ERROR: Link invalid') {
                 //problem send help
