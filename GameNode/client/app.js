@@ -19,6 +19,8 @@ var joinRoomButton = document.querySelector('#joinroombutton');
 var answerSubmit = document.querySelector('#answersubmit');
 
 var autocomplete = null;
+var audio = null;
+var duration = null;
 
 
 cloak.configure({
@@ -58,13 +60,29 @@ cloak.configure({
       console.log("Room Information " + result.roomId + " " + result.roomName);
     },
     'startGameResponse': function({song_names}) {
-      console.log("starting game with songs: ");
-      console.log(song_names);
+      console.log("starting game with songs, length: " + song_names.length);
       const comp = document.getElementById("autocomp");
       if (autocomplete)
         autocomplete.destroy();
       autocomplete = new Awesomplete(comp, {list: song_names});
       changeView('game');
+    },
+    'loadSong': function(data) {
+      const url = data.url;
+      duration = data.duration;
+      console.log('preloading song from server: ' + url);
+      const circ = initProgressCircle(duration);
+      audio = new Audio(url);
+      audio.addEventListener('canplaythrough', () => {
+        cloak.message('readySong');
+      }, false);
+    },
+    'playSong': function () {
+      console.log('playing audio!');
+      audio.play();
+      setTimeout(()=> {
+        console.log('stopping audio');
+      }, duration);
     }
   },
   //
