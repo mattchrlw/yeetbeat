@@ -59,12 +59,10 @@ function _showView(id) {
     }
 }
 
-
-function startSong(songDetails) {
+function initProgressCircle(duration) {
     if (circle) {
         circle.destroy();
     }
-    const duration = songDetails.duration;
     circle = new ProgressBar.Circle('.circle', {
         strokeWidth: 6,
         easing: 'linear',
@@ -84,7 +82,7 @@ function startSong(songDetails) {
         }
     });
     circle.set(1);
-    circle.animate(0);  // Number from 0.0 to 1.0
+    return circle;
 }
 
 function initGame() {

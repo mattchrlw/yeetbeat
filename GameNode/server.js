@@ -29,7 +29,7 @@ const server = app.listen(PORT, function () {
   console.log(`Example app listening on port ${ PORT }!`);
 });
 
-async function downloadYoutubeVid(url, flag) {
+async function asyncGetYoutubeUrl(url, flag) {
   var video = await youtubedl.exec(url, ['-g', '-f', 'bestaudio[ext=m4a]'], { cwd: __dirname }, function(err, output)  {
     if (err) {
       console.error(err);
@@ -102,7 +102,7 @@ async function getPlayList(playlistURL) {
 
 async function getYoutubeURL(ytURL) {
   const flag = {};
-  const data = await downloadYoutubeVid(req.params.url, flag);
+  const data = await asyncGetYoutubeUrl(ytURL, flag);
   while (!flag.done) {
     await delay(200);
   }
@@ -112,7 +112,7 @@ async function getYoutubeURL(ytURL) {
 
 const delay = time => new Promise(res=>setTimeout(res,time));
 app.get('/downloadYoutube/:url', async function (req, res) {
-  res.json(await getYoutubeURL());
+  res.json(await getYoutubeURL(req.params.url));
 })
 
 app.get('/getPlaylist/:url', async function (req, res) {
@@ -138,9 +138,30 @@ function sendAllrefreshRoomResponse(room) {
   })
 }
 
+async function sendNextSong(room) {
+  const videos = room.data.videos;
+  const i = Math.floor(Math.random() * (videos.length-0.001));
+  const video = videos[i];
+  room.data.current = video;
+  room.data.ready.splice(0, room.data.ready.length);
+  console.log('sending song: ' + JSON.stringify(video));
+
+  const url = await getYoutubeURL(video.url);
+  room.data.waiting = true;
+  room.messageMembers('loadSong', {url, duration: 10000});
+}
+
+function playNextSong(room) {
+  console.log('members ready, starting audio');
+  room.data.waiting = false;
+  room.messageMembers('playSong');
+}
+
 cloak.configure({
   express: server,
   port: PORT,
+  reconnectWait: 500,
+  gameLoopSpeed: 1000,
   messages: {
     //////////////////////////////////////////////
     refreshRoom: function(arg, user) {
@@ -180,23 +201,43 @@ cloak.configure({
       user.room.data.playlist = arg.playlist;
       console.log('room data: ' + JSON.stringify(user.room.data));
       user.room.messageMembers('startGameResponse', {song_names: videos.map(x => x.title)});
-    } 
+      await sendNextSong(user.room);
+    },
+    'readySong': async (arg, user) => {
+      user.room.data.ready.push(user.id);
+      console.log('user is ready: ' + user.name);
+    }
 
   },
 
   lobby: {},
   room: {
     init: function () {
-      this.data = {'TEST': 'yeet', playlist: null, points: {}};
+      this.data = {'TEST': 'yeet', playlist: null, points: {}, current: null, ready: [], waiting: false};
       console.log("Room Initation " + this.name + " " + this.id);
     },
 
 
     pulse: function () {
-      // add timed turn stuff here
+      // console.log(this.name)
+      // console.log(JSON.stringify(this.data.ready));
+      if (this.data.waiting) {
+        var waiting = false;
+        this.getMembers().forEach(mem => {
+          if (this.data.ready.indexOf(mem.id) == -1) {
+            waiting = true;
+          } 
+        });
+        if (!waiting) {
+          playNextSong(this);
+        }
+      }
     },
 
-    close: function () {}
+    close: function () {},
+    memberLeaves: function() {
+      console.log('member left: ' + this);
+    }
 
   }
 });
