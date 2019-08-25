@@ -1,0 +1,23 @@
+<script src="../scripts/Pizzicato/Pizzicato.js"></script>
+
+<button onclick="playAudio()">play</button>
+<button onclick="stopAudio()">stop</button>
+
+<script>
+    var sound = new Pizzicato.Sound({ 
+        source: 'file',
+        options: { path: '../music/Hello.mp3' }
+    }, function() {
+        console.log('sound file loaded!');
+    });
+    function playAudio() {
+        var distortion = new Pizzicato.Effects.Distortion({
+            gain: 0.4
+        });
+        sound.addEffect(distortion);
+        sound.play();
+    }
+    function stopAudio(){
+        sound.stop();
+    }
+</script>

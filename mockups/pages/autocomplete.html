@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="../scripts/awesomplete-gh-pages/awesomplete.css" />
+<script src="../scripts/awesomplete-gh-pages/awesomplete.js" async></script>
+
+<input class="awesomplete" list="mylist" />
+<datalist id="mylist">
+</datalist>
+
+
+<script type="text/javascript">
+    var arr= ["some", "dumb", "shit", "Brainfuck", "LOLCODE"];
+    var list = document.getElementById('mylist');
+    arr.forEach(function(item){
+        var option = document.createElement('option');
+        option.value = item;
+        list.appendChild(option);
+    });
+</script>
