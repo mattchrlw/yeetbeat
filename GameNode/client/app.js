@@ -16,12 +16,12 @@ var userNameInputCreate = document.querySelector('#nameboxcreate');
 var joinRoomName = document.querySelector('#joinroomname');
 var joinRoomCode = document.querySelector('#joinroomcode');
 var joinRoomButton = document.querySelector('#joinroombutton');
-var answerSubmit = document.querySelector('#answersubmit');
 
 var autocomplete = null;
+var circle = null;
 var audio = null;
 var duration = null;
-
+var timer = null;
 
 cloak.configure({
   messages: {
@@ -35,7 +35,26 @@ cloak.configure({
     userCount: function (count) {
       //counter.textContent = count;
     },*/
-    'refreshRoomResponse': function (data) {
+    'joinLobbyResponse': function (success) {
+      console.log('joined lobby');
+      game.refreshLobby();
+    },
+    'getScoreBoard': function (data) {
+      console.log("scoreboard hit");
+      var ul = document.getElementById("scoreboard");
+      ul.innerHTML = "";
+      var ul2 = document.getElementById("scoreboard2");
+      ul2.innerHTML = "";
+      data.forEach(function (item) {
+        var li = document.createElement("li");
+        var li2 = document.createElement("li");
+        li.appendChild(document.createTextNode(item.name + ": " + item.score));
+        li2.appendChild(document.createTextNode(item.name + ": " + item.score));
+        ul.appendChild(li);
+        ul2.appendChild(li2);
+      });
+    },
+    'refreshRoomResponse': function (data) {      
       var users = data.users;
       var roomCount = data.count;
       var UsersElement = document.getElementById('Users');
@@ -64,7 +83,7 @@ cloak.configure({
       const comp = document.getElementById("autocomp");
       if (autocomplete)
         autocomplete.destroy();
-      autocomplete = new Awesomplete(comp, {list: song_names});
+      autocomplete = new Awesomplete(comp, {list: song_names, minChars: 3});
       changeView('game');
     },
     'loadSong': function(data) {
@@ -72,18 +91,31 @@ cloak.configure({
       duration = data.duration;
       console.log('preloading song from server: ' + url);
       const circ = initProgressCircle(duration);
+      circle = circ;
       audio = new Audio(url);
-      audio.addEventListener('canplaythrough', () => {
+      audio.addEventListener('canplay', () => {
         cloak.message('readySong');
-      }, false);
+      });
     },
     'playSong': function () {
       console.log('playing audio!');
+      circle.animate(0);
       audio.play();
-      setTimeout(()=> {
+      timer = setTimeout(()=> {
         console.log('stopping audio');
+        audio.pause();
+        timer = null;
       }, duration);
+    },
+    'showResults': function() {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+        audio.pause();
+      }
+      changeView('results');
     }
+    
   },
   //
   serverEvents: {
@@ -142,10 +174,6 @@ newRoomPart2.addEventListener('click', (function (e) {
 
   cloak.message('newRoom', {username: userNameInputCreate.value, playlist: 'PLAYLIST URL'});
   cloak.message('refreshRoom');
-}));
-answerSubmit.addEventListener('click', (function (e) {
-  console.log('clicked submit answer');
-  cloak.message('newRoom', userNameInputCreate.value);
 }));
 
 document.getElementById('start-game-btn')

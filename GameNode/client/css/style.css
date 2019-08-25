@@ -176,11 +176,17 @@ body {
 }
 
 #Users {
-    margin: 1em 2em;
+    /* margin: 1em 2em; */
+    margin-bottom: 1em;
 }
 
 .room-user {
     margin: 0.2em 0;
+    background-color: #EEEEEE;
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 3px;
+    font-family: 'Roboto Mono', monospace;
 }
 
 /* customizable snowflake styling */

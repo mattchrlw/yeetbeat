@@ -65,7 +65,7 @@
             <div class="input-group mb-3">
                 <input type="text" class="form-control" id="playlistURLvalue" 
                     placeholder="Enter playlist URL" aria-label="Enter playlist URL"
-                    value="https://www.youtube.com/playlist?list=PLE6rhv8iI_vJ48CbdqZqnr-6LT4A_Lxtq">
+                    value="https://www.youtube.com/playlist?list=RDQMSn86E3HbC8c">
             </div>
             <a onclick="" class="btn btn-lg btn-block"
                 style="background-color: #42A5F5" id="openroom">Open Room</a>
@@ -75,6 +75,7 @@
         <div class="padding hideable" id="room">
             <h1 class="display-bold">Room</h1> 
             <div class="room-code" id="room-code">MATTS RANDOM NUMBER</div>
+            <p style="font-weight: bold">Users currently in lobby:</p>
             <div id="Users">
                 <div class="room-user">fasji</div>
                 <div class="room-user">fweajio</div>
@@ -87,7 +88,7 @@
             <h1 class="display-bold">Join</h1>
             <p>Here we insert a list of the players in the lobby. After people have joined, click start game.</p>
             <div class="input-group mb-3">
-                <input type="text" id="joinroomname" class="form-control" id="nameboxjoin" placeholder="Player name" aria-label="Enter name">
+                <input type="text" id="joinroomname" class="form-control" maxlength=20 id="nameboxjoin" placeholder="Player name" aria-label="Enter name">
             </div>
             <div class="input-group mb-3">
                 <input type="text" id="joinroomcode" class="form-control mono" maxlength=10 placeholder="Room code" aria-label="Enter code">
@@ -98,9 +99,6 @@
         <div class="padding hideable" id="settings">
             <h1 class="display-bold">Settings</h1>
             <p>This page shows some difficulty settings like nightcore mode and shit</p>
-        
-            
-            <!--            -->
             <form class="was-validated">
                 <label for="customRange3">Difficulty (least is most difficult)</label>
                 <input type="range" class="custom-range" min="0.5" max="60" step="0.5" id="customRange3">
@@ -135,7 +133,9 @@
         </div>
         <div class="padding hideable" id="results">
             <h1 class="display-bold">Current results:</h1>
-            <a onclick="javascript:changeView('game')" class="btn btn-lg btn-block"
+            <ul id="scoreboard"></ul>
+            <a id="next-round-btn"
+                onclick="javascript:changeView('game')" class="btn btn-lg btn-block"
                 style="background-color: #9CCC65">Next round</a>
             <a onclick="javascript:changeView('gameover')" class="btn btn-lg btn-block"
                 style="background-color: #ef5350">End game</a>
@@ -143,6 +143,7 @@
         <div class="padding hideable" id="gameover">
             <h1 class="display-bold">Game over!</h1>
             <p>This page shows the winner. After this, click the bottom button to go to the home page.</p>
+            <ul id="scoreboard2"></ul>
             <a onclick="javascript:changeView('home')" class="btn btn-lg btn-block btn-secondary">Start again</a>
         </div>
         <div class="padding hideable" id="game">
@@ -153,7 +154,7 @@
             <div class="input-group mb-3">
                 <input id="autocomp" type="text" class="form-control" placeholder="Guess song" aria-label="Guess song">
             </div>
-            <a id="answersubmit" onclick="javascript:changeView('results')" class="btn btn-lg btn-block"
+            <a id="answersubmit" class="btn btn-lg btn-block"
                 style="background-color: #9CCC65">Finish round</a>
         </div>
         </div>

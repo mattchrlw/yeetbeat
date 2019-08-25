@@ -37,7 +37,7 @@ async function asyncGetYoutubeUrl(url, flag) {
     }
     // console.log(JSON.stringify(output));
     output.forEach(x => {
-      console.log('video: ' + x);
+      // console.log('video: ' + x);
     })
     flag.url = output[0];
     flag.done = 1;
@@ -106,7 +106,7 @@ async function getYoutubeURL(ytURL) {
   while (!flag.done) {
     await delay(200);
   }
-  console.log('returning url: ' + flag.url);
+  // console.log('returning url: ' + flag.url);
   return flag.url;
 }
 
@@ -148,7 +148,7 @@ async function sendNextSong(room) {
 
   const url = await getYoutubeURL(video.url);
   room.data.waiting = true;
-  room.messageMembers('loadSong', {url, duration: 10000});
+  room.messageMembers('loadSong', {url, duration: 30000});
 }
 
 function playNextSong(room) {
@@ -206,6 +206,47 @@ cloak.configure({
     'readySong': async (arg, user) => {
       user.room.data.ready.push(user.id);
       console.log('user is ready: ' + user.name);
+    },
+    'nextSong': async (arg, user) => {
+      user.room.messageMembers('startGameResponse', 
+        {song_names: user.room.data.videos.map(x => x.title)});
+      await sendNextSong(user.room);
+    },
+    updateScore: function(arg,user) {
+      const guess = arg.guess;
+      if (guess === user.room.data.current.title) {
+        // correct guess, add points
+        if (user.data === undefined) {
+          user.data = {};
+          user.data.score = 0;
+        }
+        user.data.score += arg.score;
+      }
+      console.log("This is the console log you are looking for: " + JSON.stringify(arg));
+    },
+    getAllScores: function(arg,user) {
+      console.log("getAllScores hit");
+      var allUsers = user.getRoom().getMembers();
+      var list = [];
+      allUsers.forEach(function (item) {
+        if (item.data !== undefined) {
+          console.log(item.name);
+          list.push({
+            name: item.name,
+            score: item.data.score
+          });
+        }
+        else {
+          list.push({
+            name: item.name,
+            score: 0
+          });
+        }
+      })
+      cloak.messageAll("getScoreBoard", list);
+    },
+    'finishRound': function (arg, user) {
+      user.getRoom().messageMembers('showResults');
     }
 
   },
