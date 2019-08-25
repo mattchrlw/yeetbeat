@@ -149,8 +149,7 @@ openRoomButton.addEventListener('click', async (ev) => {
     const songNames = await getAutoComp(playlist);
     if (songNames) {
         playlistURL = playlist;
-        var input = document.getElementById("autocomp");
-        new Awesomplete(input, {list: songNames});
+        
         changeView('room');
     } else {
         alert('Error loading playlist!');

@@ -18,6 +18,8 @@ var joinRoomCode = document.querySelector('#joinroomcode');
 var joinRoomButton = document.querySelector('#joinroombutton');
 var answerSubmit = document.querySelector('#answersubmit');
 
+var autocomplete = null;
+
 
 cloak.configure({
   messages: {
@@ -58,6 +60,10 @@ cloak.configure({
     'startGameResponse': function({song_names}) {
       console.log("starting game with songs: ");
       console.log(song_names);
+      const comp = document.getElementById("autocomp");
+      if (autocomplete)
+        autocomplete.destroy();
+      autocomplete = new Awesomplete(comp, {list: song_names});
       changeView('game');
     }
   },
