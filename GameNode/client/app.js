@@ -83,7 +83,7 @@ cloak.configure({
       const comp = document.getElementById("autocomp");
       if (autocomplete)
         autocomplete.destroy();
-      autocomplete = new Awesomplete(comp, {list: song_names});
+      autocomplete = new Awesomplete(comp, {list: song_names, minChars: 3});
       changeView('game');
     },
     'loadSong': function(data) {
