@@ -108,25 +108,21 @@ app.get('/getPlaylist/:url', async function (req, res) {
   res.json(data);
 })
 
-var sendLobbyCount = function (arg) {
-  this.messageMembers('chat', "for lobby");
-};
-
 //const server = connect().use(connect.static('./client')).listen(PORT);
 
 const rooms = {};
 
-function sendRefreshRoom(user) {
-  user.message('refreshRoom', {
+function sendrefreshRoomResponse(user) {
+  user.message('refreshRoomResponse', {
     users: user.room.getMembers(true),
     room: user.room.name,
     count: user.room.getMembers(true).length
   });
 }
 
-function sendAllRefreshRoom(room) {
+function sendAllrefreshRoomResponse(room) {
   room.getMembers().forEach(user => {
-    sendRefreshRoom(user);
+    sendrefreshRoomResponse(user);
   })
 }
 
@@ -134,86 +130,43 @@ cloak.configure({
   express: server,
   port: PORT,
   messages: {
-    chat: function (msg, user) {
-      user.getRoom().messageMembers('chat', msg);
-    },
-
-    checkAnswer: function(arg, user) {
-      user.getRoom();
-    },
-    ////////////////////////////////////////////
-    joinLobby: function(arg, user) {
-      cloak.getLobby().addMember(user);
-      user.message('joinLobbyResponse');
-      console.log("User Joined Lobby " + user.id);
-    },
-    joinRoom: function (id, user) {
-      cloak.getRoom(id).addMember(user);
-      user.message('joinRoomResponse', {
-        id: id,
-        success: true
-      });
-    },
-
-    listRooms: function (arg, user) {
-      user.message('listRooms', cloak.getRooms(true));
-      console.log("received list rooms " + cloak.getRooms(true));
-    },
     //////////////////////////////////////////////
-    listUsers: function(arg, user) {
-      sendRefreshRoom(user);      
+    refreshRoom: function(arg, user) {
+      sendrefreshRoomResponse(user);      
     },
-    createRoom: function(arg, user) {
+    newRoom: function(arg, user) {
       const roomNum = Math.floor(Math.random()*1000000-1);
       var room = cloak.createRoom(roomNum, 100);
-      user.name = arg;
+      user.name = arg.username;
 
-      console.log("creating room " + roomNum + ' for ' + arg);
+      console.log("creating room " + roomNum + ' for ' + arg.username);
       rooms[roomNum] = room;
-      console.log("all rooms: " + JSON.stringify(rooms));
+      console.log("all rooms: " + JSON.stringify(Object.keys(rooms)));
 
       var success = room.addMember(user);
-      user.message('roomCreated', {
+      user.message('newRoomResponse', {
         success: success,
         roomId: room.id,
         roomName: room.name
       });
+      sendrefreshRoomResponse(user);
     },
-    joinRoomFromName: function(arg,user)  {
-      console.log("user joining room!");
+    joinRoom: function(arg,user)  {
       // console.log("all rooms: " + JSON.stringify(rooms));
-
       const room = rooms[arg.room];
       user.name = arg.username;
+
       room.addMember(user);
 
       console.log("refreshing other users in room " + room.name);
-      sendAllRefreshRoom(room);
+      sendAllrefreshRoomResponse(room);
     }
 
   },
 
-  lobby: {
-    newMember: sendLobbyCount,
-    memberLeaves: sendLobbyCount,
-  },
+  lobby: {},
   room: {
     init: function () {
-      /*
-        Room Variables,
-        this.xxxxxxxxx
-        need scores, songs, playlist, l
-        etc etc etc
-
-
-      */
-      // this.playlist;
-      // this.amountSongs;
-      // this.scores = {playerid: x, score: y};
-      // this.songlength;
-      // this.modifiers;
-
-      console.log(cloak.getRooms(true));
       console.log("Room Initation " + this.name + " " + this.id);
     },
 
@@ -222,9 +175,7 @@ cloak.configure({
       // add timed turn stuff here
     },
 
-    close: function () {
-      this.messageMembers('you have left ' + this.name);
-    }
+    close: function () {}
 
   }
 });

@@ -158,8 +158,8 @@
           cloak._trigger('cloak-leftRoom', room);
         });
 
-        socket.on('cloak-roomCreated', function(rooms) {
-          cloak._trigger('cloak-roomCreated', rooms);
+        socket.on('cloak-newRoomResponse', function(rooms) {
+          cloak._trigger('cloak-newRoomResponse', rooms);
         });
 
         socket.on('cloak-roomDeleted', function(rooms) {
