@@ -176,6 +176,9 @@ cloak.configure({
     'startGame': async function (arg, user) {
       console.log('starting game with playlist URL: ' + arg.playlist);
       const videos = await getPlayList(arg.playlist);
+      user.room.data.videos = videos;
+      user.room.data.playlist = arg.playlist;
+      console.log('room data: ' + JSON.stringify(user.room.data));
       user.room.messageMembers('startGameResponse', {song_names: videos.map(x => x.title)});
     } 
 

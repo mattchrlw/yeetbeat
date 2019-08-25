@@ -58,6 +58,7 @@ cloak.configure({
     'startGameResponse': function({song_names}) {
       console.log("starting game with songs: ");
       console.log(song_names);
+      changeView('game');
     }
   },
   //
@@ -125,6 +126,8 @@ answerSubmit.addEventListener('click', (function (e) {
 
 document.getElementById('start-game-btn')
 .addEventListener('click', (ev) => {
+  ev.preventDefault();
+  ev.stopPropagation();
   if (!playlistURL) {
     console.warn('not host, cant start game.');
     return;

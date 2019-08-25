@@ -162,8 +162,6 @@ openRoomButton.addEventListener('click', async (ev) => {
 
 const startGameButton = document.getElementById('start-game-btn');
 
-
-
 function main() {
     changeView('home');
 }
