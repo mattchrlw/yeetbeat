@@ -26,7 +26,7 @@ const server = app.listen(PORT, function () {
 });
 
 async function downloadYoutubeVid(url, flag) {
-  var video = await youtubedl.exec(url, ['-g', '-f', 'bestaudio[ext=m4a]'], { cwd: __dirname }, function(err, output)  {
+  var video = await youtubedl.exec(url, ['-g', '-f', 'bestaudio[ext=m4a]', '--force-ipv4'], { cwd: __dirname }, function(err, output)  {
     if (err) {
       console.error(err);
       return;
