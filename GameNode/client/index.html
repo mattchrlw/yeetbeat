@@ -75,6 +75,7 @@
         <div class="padding hideable" id="room">
             <h1 class="display-bold">Room</h1> 
             <div class="room-code" id="room-code">MATTS RANDOM NUMBER</div>
+            <p style="font-weight: bold">Users currently in lobby:</p>
             <div id="Users">
                 <div class="room-user">fasji</div>
                 <div class="room-user">fweajio</div>
@@ -87,7 +88,7 @@
             <h1 class="display-bold">Join</h1>
             <p>Here we insert a list of the players in the lobby. After people have joined, click start game.</p>
             <div class="input-group mb-3">
-                <input type="text" id="joinroomname" class="form-control" id="nameboxjoin" placeholder="Player name" aria-label="Enter name">
+                <input type="text" id="joinroomname" class="form-control" maxlength=20 id="nameboxjoin" placeholder="Player name" aria-label="Enter name">
             </div>
             <div class="input-group mb-3">
                 <input type="text" id="joinroomcode" class="form-control mono" maxlength=10 placeholder="Room code" aria-label="Enter code">
@@ -98,9 +99,6 @@
         <div class="padding hideable" id="settings">
             <h1 class="display-bold">Settings</h1>
             <p>This page shows some difficulty settings like nightcore mode and shit</p>
-        
-            
-            <!--            -->
             <form class="was-validated">
                 <label for="customRange3">Difficulty (least is most difficult)</label>
                 <input type="range" class="custom-range" min="0.5" max="60" step="0.5" id="customRange3">
