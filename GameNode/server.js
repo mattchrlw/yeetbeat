@@ -208,15 +208,16 @@ cloak.configure({
       console.log('user is ready: ' + user.name);
     },
     updateScore: function(arg,user) {
-      if (user.data !== undefined) {
-        user.data.score += arg;
+      const guess = arg.guess;
+      if (guess === user.room.data.current.title) {
+        // correct guess, add points
+        if (user.data === undefined) {
+          user.data = {};
+          user.data.score = 0;
+        }
+        user.data.score += arg.score;
       }
-      else {
-        user.data = {
-          score: arg
-        };
-      }
-      console.log("This is the console log you are looking for: " + JSON.stringify(user.data));
+      console.log("This is the console log you are looking for: " + JSON.stringify(arg));
     },
     getAllScores: function(arg,user) {
       console.log("getAllScores hit");

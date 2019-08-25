@@ -40,8 +40,10 @@ function changeView(id) {
 
 function _showView(id) {
     const old = document.querySelector('.active');
-    old.style.animation = 'fadeOut 0.2s ease forwards';
-    old.classList.remove('active');
+    if (old) {
+        old.style.animation = 'fadeOut 0.2s ease forwards';
+        old.classList.remove('active');
+    }
 
     const next = document.querySelector('#' + id);
     next.classList.add('active');
@@ -79,7 +81,7 @@ function initProgressCircle(duration) {
         step: function(state, circle) {
             circle.path.setAttribute('stroke', state.color);
             circle.setText(Math.ceil(state.remaining));
-            time = Math.ceil((1-circle.value())*100);
+            time = Math.ceil((circle.value())*100);
         },
         text: {
             className: 'circle-text',
@@ -163,39 +165,17 @@ openRoomButton.addEventListener('click', async (ev) => {
 
 const startGameButton = document.getElementById('start-game-btn');
 
-function addScore() {
-    var input = document.getElementById("autocomp");
-    
-    if (answer === input.value) {
-        //Answered Correct
-        console.log(answer);
-        if(youtubeArr.length === 0) {
-            //go to game over screen instead
-        }
-        input.value = "";
-        return time;
-        
-    }
-    else {
-        input.value = "";
-        return 0;
-    }
-}
 var answerSubmit = document.querySelector('#answersubmit');
 
 answerSubmit.addEventListener('click', (function (e) {
-    audio.pause();
-    var score = addScore();
-    cloak.message('updateScore', score);
+    // audio.pause();
+    var input = document.getElementById("autocomp");
+    input.disabled = true;
+    cloak.message('updateScore', 
+        {guess: input.value, score: time});
     cloak.message('getAllScores');
     console.log('clicked submit answer');
-    if (youtubeArr.length === 0) {
-        changeView('gameover');
-    }
-    else {
-        changeView('results');
-    }
-  }))
+}));
 
 function main() {
     changeView('home');

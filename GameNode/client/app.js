@@ -84,6 +84,10 @@ cloak.configure({
       if (autocomplete)
         autocomplete.destroy();
       autocomplete = new Awesomplete(comp, {list: song_names});
+      if (!playlistURL) {
+        document.getElementById('answersubmit')
+          .classList.add('disabled');
+      }
       changeView('game');
     },
     'loadSong': function(data) {
@@ -93,9 +97,9 @@ cloak.configure({
       const circ = initProgressCircle(duration);
       circle = circ;
       audio = new Audio(url);
-      audio.addEventListener('canplaythrough', () => {
+      audio.addEventListener('canplay', () => {
         cloak.message('readySong');
-      }, false);
+      });
     },
     'playSong': function () {
       console.log('playing audio!');
@@ -104,6 +108,7 @@ cloak.configure({
       setTimeout(()=> {
         console.log('stopping audio');
         audio.pause();
+        changeView('results');
       }, duration);
     }
   },
