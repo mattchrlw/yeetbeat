@@ -1,4 +1,4 @@
-const SERVER = 'http://localhost:5000'
+const SERVER = 'http://yeetbeat.fun'
 
 /** Progress circle for song progress. */
 var circle;
