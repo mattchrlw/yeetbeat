@@ -207,11 +207,11 @@ cloak.configure({
 
 
       */
-      this.playlist;
-      this.amountSongs;
-      this.scores = {playerid: x, score: y};
-      this.songlength;
-      this.modifiers;
+      // this.playlist;
+      // this.amountSongs;
+      // this.scores = {playerid: x, score: y};
+      // this.songlength;
+      // this.modifiers;
 
       console.log(cloak.getRooms(true));
       console.log("Room Initation " + this.name + " " + this.id);
