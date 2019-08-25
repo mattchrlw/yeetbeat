@@ -37,7 +37,7 @@ async function asyncGetYoutubeUrl(url, flag) {
     }
     // console.log(JSON.stringify(output));
     output.forEach(x => {
-      console.log('video: ' + x);
+      // console.log('video: ' + x);
     })
     flag.url = output[0];
     flag.done = 1;
@@ -106,7 +106,7 @@ async function getYoutubeURL(ytURL) {
   while (!flag.done) {
     await delay(200);
   }
-  console.log('returning url: ' + flag.url);
+  // console.log('returning url: ' + flag.url);
   return flag.url;
 }
 
@@ -148,7 +148,7 @@ async function sendNextSong(room) {
 
   const url = await getYoutubeURL(video.url);
   room.data.waiting = true;
-  room.messageMembers('loadSong', {url, duration: 10000});
+  room.messageMembers('loadSong', {url, duration: 30000});
 }
 
 function playNextSong(room) {

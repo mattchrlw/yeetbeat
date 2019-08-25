@@ -19,6 +19,7 @@ var joinRoomButton = document.querySelector('#joinroombutton');
 var answerSubmit = document.querySelector('#answersubmit');
 
 var autocomplete = null;
+var circle = null;
 var audio = null;
 var duration = null;
 
@@ -72,6 +73,7 @@ cloak.configure({
       duration = data.duration;
       console.log('preloading song from server: ' + url);
       const circ = initProgressCircle(duration);
+      circle = circ;
       audio = new Audio(url);
       audio.addEventListener('canplaythrough', () => {
         cloak.message('readySong');
@@ -79,9 +81,11 @@ cloak.configure({
     },
     'playSong': function () {
       console.log('playing audio!');
+      circle.animate(0);
       audio.play();
       setTimeout(()=> {
         console.log('stopping audio');
+        audio.pause();
       }, duration);
     }
   },
