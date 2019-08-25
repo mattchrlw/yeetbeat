@@ -2,9 +2,7 @@
 
 var cloak = require('cloak');
 var _ = require('underscore');
-var connect = require('connect');
 var express = require('express');
-const app = express();
 var youtubedl = require('youtube-dl');
 var fs = require('fs');
 const bodyParser = require('body-parser');
@@ -14,20 +12,29 @@ const ypi = require('youtube-playlist-info');
 
 const PORT = process.env.PORT || 5000
 
+const app = express();
 // CORS
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+app.use("/", express.static(__dirname + "/client"));
+
+const server = app.listen(PORT, function () {
+  console.log(`Example app listening on port ${ PORT }!`);
+});
 
 async function downloadYoutubeVid(url, flag) {
-  var video = await youtubedl.exec(url, ['-g', '-f', '140'], { cwd: __dirname }, function(err, output)  {
+  var video = await youtubedl.exec(url, ['-g', '-f', 'bestaudio[ext=m4a]'], { cwd: __dirname }, function(err, output)  {
     if (err) {
       console.error(err);
       return;
     }
     // console.log(JSON.stringify(output));
+    output.forEach(x => {
+      console.log('video: ' + x);
+    })
     flag.url = output[0];
     flag.done = 1;
   });
@@ -107,12 +114,6 @@ var sendLobbyCount = function (arg) {
 
 //const server = connect().use(connect.static('./client')).listen(PORT);
 
-app.use("/", express.static(__dirname + "/client"));
-
-const server = app.listen(PORT, function () {
-  console.log(`Example app listening on port ${ PORT }!`);
-})
-
 const rooms = {};
 
 function sendRefreshRoom(user) {
@@ -131,17 +132,14 @@ function sendAllRefreshRoom(room) {
 
 cloak.configure({
   express: server,
+  port: PORT,
   messages: {
     chat: function (msg, user) {
       user.getRoom().messageMembers('chat', msg);
     },
 
-
-
-
     checkAnswer: function(arg, user) {
       user.getRoom();
-
     },
     ////////////////////////////////////////////
     joinLobby: function(arg, user) {
@@ -232,5 +230,4 @@ cloak.configure({
 });
 
 cloak.run();
-
-console.log('We are up and running on port: ' + PORT);
+// server.run();
