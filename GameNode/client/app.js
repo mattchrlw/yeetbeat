@@ -169,5 +169,5 @@ answerSubmit.addEventListener('click', (function (e) {
   cloak.message('listUsers');
 }));
 
-cloak.run(SERVER); // dev mode
-// cloak.run('http://yeetbeat.fun')
+//cloak.run(SERVER); // dev mode
+cloak.run('http://yeetbeat.fun')
