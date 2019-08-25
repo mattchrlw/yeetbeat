@@ -173,9 +173,12 @@ answerSubmit.addEventListener('click', (function (e) {
     console.log('clicked submit answer');
     cloak.message('createRoom', userNameInputCreate.value);
     cloak.message('listUsers');
-    //if () {
-
-    //}
+    if (youtubeArr.length === 0) {
+        changeView('gameover');
+    }
+    else {
+        changeView('results');
+    }
   }))
 
 function main() {
