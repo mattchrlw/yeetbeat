@@ -9,6 +9,10 @@ const bodyParser = require('body-parser');
 var path = require('path');
 const ypi = require('youtube-playlist-info');
 
+const url = require('url');
+const querystring = require('querystring');
+
+
 
 const PORT = process.env.PORT || 5000
 
@@ -68,39 +72,47 @@ async function downloadYoutubeVid(url, flag) {
   video.on('next', downloadPlaylist);
 }*/
 
-async function getPlayList(url) {
+async function getPlayList(playlistURL) {
   try {
     const videos = [];
-
-    var PlaylistID = url.split("list=")[1];
+    let parsedUrl = url.parse(playlistURL);
+    let parsedQs = querystring.parse(parsedUrl.query);
+    // console.log(querystring.parse(url));
+    var PlaylistID = parsedQs.list;
     await ypi("AIzaSyDt2-8433-k2eK0GGUIUbKvmO2jkbIvH8Y", PlaylistID).then(items => {
       //console.log(items);
       //List of songs is the titles of the youtube video
 
       items.forEach(function (value) {
+        if (value.title == 'Private video') return;
         videos.push({
           title: value.title,
-          video_id: value.resourceId.videoId
+          url: 'http://www.youtube.com/watch?v='+value.resourceId.videoId
         });
       });
     });
     return videos;
   }
   catch (e) {
+    console.error(e);
     //playlist link is invalid, do something, don't continue
     return 'ERROR: Link invalid';
   }
 }
 
-const delay = time => new Promise(res=>setTimeout(res,time));
-app.get('/downloadYoutube/:url', async function (req, res) {
+async function getYoutubeURL(ytURL) {
   const flag = {};
   const data = await downloadYoutubeVid(req.params.url, flag);
   while (!flag.done) {
     await delay(200);
   }
   console.log('returning url: ' + flag.url);
-  res.json(flag.url);
+  return flag.url;
+}
+
+const delay = time => new Promise(res=>setTimeout(res,time));
+app.get('/downloadYoutube/:url', async function (req, res) {
+  res.json(await getYoutubeURL());
 })
 
 app.get('/getPlaylist/:url', async function (req, res) {
@@ -108,25 +120,21 @@ app.get('/getPlaylist/:url', async function (req, res) {
   res.json(data);
 })
 
-var sendLobbyCount = function (arg) {
-  this.messageMembers('chat', "for lobby");
-};
-
 //const server = connect().use(connect.static('./client')).listen(PORT);
 
 const rooms = {};
 
-function sendRefreshRoom(user) {
-  user.message('refreshRoom', {
+function sendrefreshRoomResponse(user) {
+  user.message('refreshRoomResponse', {
     users: user.room.getMembers(true),
     room: user.room.name,
     count: user.room.getMembers(true).length
   });
 }
 
-function sendAllRefreshRoom(room) {
+function sendAllrefreshRoomResponse(room) {
   room.getMembers().forEach(user => {
-    sendRefreshRoom(user);
+    sendrefreshRoomResponse(user);
   })
 }
 
@@ -134,86 +142,52 @@ cloak.configure({
   express: server,
   port: PORT,
   messages: {
-    chat: function (msg, user) {
-      user.getRoom().messageMembers('chat', msg);
-    },
-
-    checkAnswer: function(arg, user) {
-      user.getRoom();
-    },
-    ////////////////////////////////////////////
-    joinLobby: function(arg, user) {
-      cloak.getLobby().addMember(user);
-      user.message('joinLobbyResponse');
-      console.log("User Joined Lobby " + user.id);
-    },
-    joinRoom: function (id, user) {
-      cloak.getRoom(id).addMember(user);
-      user.message('joinRoomResponse', {
-        id: id,
-        success: true
-      });
-    },
-
-    listRooms: function (arg, user) {
-      user.message('listRooms', cloak.getRooms(true));
-      console.log("received list rooms " + cloak.getRooms(true));
-    },
     //////////////////////////////////////////////
-    listUsers: function(arg, user) {
-      sendRefreshRoom(user);      
+    refreshRoom: function(arg, user) {
+      sendrefreshRoomResponse(user);      
     },
-    createRoom: function(arg, user) {
+    newRoom: function(arg, user) {
       const roomNum = Math.floor(Math.random()*1000000-1);
       var room = cloak.createRoom(roomNum, 100);
-      user.name = arg;
+      user.name = arg.username;
 
-      console.log("creating room " + roomNum + ' for ' + arg);
+      console.log("creating room " + roomNum + ' for ' + arg.username);
       rooms[roomNum] = room;
-      console.log("all rooms: " + JSON.stringify(rooms));
+      console.log("all rooms: " + JSON.stringify(Object.keys(rooms)));
 
       var success = room.addMember(user);
-      user.message('roomCreated', {
+      user.message('newRoomResponse', {
         success: success,
         roomId: room.id,
         roomName: room.name
       });
+      sendrefreshRoomResponse(user);
     },
-    joinRoomFromName: function(arg,user)  {
-      console.log("user joining room!");
+    joinRoom: function(arg,user)  {
       // console.log("all rooms: " + JSON.stringify(rooms));
-
       const room = rooms[arg.room];
       user.name = arg.username;
+
       room.addMember(user);
 
       console.log("refreshing other users in room " + room.name);
-      sendAllRefreshRoom(room);
-    }
+      sendAllrefreshRoomResponse(room);
+    },
+    'startGame': async function (arg, user) {
+      console.log('starting game with playlist URL: ' + arg.playlist);
+      const videos = await getPlayList(arg.playlist);
+      user.room.data.videos = videos;
+      user.room.data.playlist = arg.playlist;
+      console.log('room data: ' + JSON.stringify(user.room.data));
+      user.room.messageMembers('startGameResponse', {song_names: videos.map(x => x.title)});
+    } 
 
   },
 
-  lobby: {
-    newMember: sendLobbyCount,
-    memberLeaves: sendLobbyCount,
-  },
+  lobby: {},
   room: {
     init: function () {
-      /*
-        Room Variables,
-        this.xxxxxxxxx
-        need scores, songs, playlist, l
-        etc etc etc
-
-
-      */
-      // this.playlist;
-      // this.amountSongs;
-      // this.scores = {playerid: x, score: y};
-      // this.songlength;
-      // this.modifiers;
-
-      console.log(cloak.getRooms(true));
+      this.data = {'TEST': 'yeet', playlist: null, points: {}};
       console.log("Room Initation " + this.name + " " + this.id);
     },
 
@@ -222,9 +196,7 @@ cloak.configure({
       // add timed turn stuff here
     },
 
-    close: function () {
-      this.messageMembers('you have left ' + this.name);
-    }
+    close: function () {}
 
   }
 });

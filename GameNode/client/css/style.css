@@ -55,6 +55,7 @@
 body {
     font-family: 'Inter', sans-serif !important;
     letter-spacing: -0.02em;
+    background-color: #EEEEEE;
 }
 
 .container {
@@ -65,6 +66,11 @@ body {
     font-size: 0.75em;
     color: #666666;
     margin: 10px;
+}
+
+.minimal-text-nm {
+    font-size: 0.75em;
+    color: #666666;
 }
 
 .center {
@@ -94,7 +100,7 @@ body {
 .btn {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
     color: white !important;
     cursor: pointer;
     height: 50px;
@@ -155,6 +161,9 @@ body {
 .main-column {
     max-width: 400px;
     margin: 0 auto;
+    background-color: #FFFFFF;
+    position: relative;
+    outline: 30px solid white;
 }
 
 .room-code {
