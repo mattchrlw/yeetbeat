@@ -189,6 +189,38 @@ cloak.configure({
 
       console.log("refreshing other users in room " + room.name);
       sendAllRefreshRoom(room);
+    },
+    updateScore: function(arg,user) {
+      if (user.data !== undefined) {
+        user.data.score += arg;
+      }
+      else {
+        user.data = {
+          score: arg
+        };
+      }
+      console.log("This is the console log you are looking for: " + JSON.stringify(user.data));
+    },
+    getAllScores: function(arg,user) {
+      console.log("getAllScores hit");
+      var allUsers = user.getRoom().getMembers();
+      var list = [];
+      allUsers.forEach(function (item) {
+        if (item.data !== undefined) {
+          console.log(item.name);
+          list.push({
+            name: item.name,
+            score: item.data.score
+          });
+        }
+        else {
+          list.push({
+            name: item.name,
+            score: 0
+          });
+        }
+      })
+      cloak.messageAll("getScoreBoard", list);
     }
 
   },

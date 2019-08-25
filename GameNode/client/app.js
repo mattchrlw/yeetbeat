@@ -16,7 +16,6 @@ var userNameInputCreate = document.querySelector('#nameboxcreate');
 var joinRoomName = document.querySelector('#joinroomname');
 var joinRoomCode = document.querySelector('#joinroomcode');
 var joinRoomButton = document.querySelector('#joinroombutton');
-var answerSubmit = document.querySelector('#answersubmit');
 
 
 cloak.configure({
@@ -34,6 +33,15 @@ cloak.configure({
     'joinLobbyResponse': function (success) {
       console.log('joined lobby');
       game.refreshLobby();
+    },
+    'getScoreBoard': function (data) {
+      console.log("scoreboard hit");
+      var ul = document.getElementById("scoreboard");
+      data.forEach(function (item) {
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(item.name + ": " + item.score));
+        ul.appendChild(li);
+      });
     },
     'refreshRoom': function (data) {
       var users = data.users;
@@ -163,11 +171,7 @@ createRoomPart2.addEventListener('click', (function (e) {
   cloak.message('createRoom', userNameInputCreate.value);
   cloak.message('listUsers');
 }));
-answerSubmit.addEventListener('click', (function (e) {
-  console.log('clicked submit answer');
-  cloak.message('createRoom', userNameInputCreate.value);
-  cloak.message('listUsers');
-}));
+;
 
 cloak.run(SERVER); // dev mode
 // cloak.run('http://yeetbeat.fun')

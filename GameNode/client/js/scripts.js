@@ -3,6 +3,10 @@ const SERVER = 'http://localhost:5000'
 /** Progress circle for song progress. */
 var circle;
 var youtubeArr = [];
+var time = 0;
+var answer = "";
+var sound;
+var duration = 20000;
 
 /** Handler functions fired when the view is changed to a particular view. */
 const viewHandlers = {
@@ -79,6 +83,7 @@ function startSong(songDetails) {
         step: function(state, circle) {
             circle.path.setAttribute('stroke', state.color);
             circle.setText(Math.ceil(state.remaining));
+            time = Math.ceil((1-circle.value())*100);
         },
         text: {
             className: 'circle-text',
@@ -93,7 +98,7 @@ function initGame() {
     var random = Math.floor(Math.random() * (youtubeArr.length-0.001));
     var result = youtubeArr[random];
     console.log(result);
-    
+    answer = result.title;
     fetch(SERVER+"/downloadYoutube/"+encodeURIComponent("https://www.youtube.com/watch?v="+result.video_id))
         .then(data => data.json())
         .then(function(filename) {
@@ -103,11 +108,18 @@ function initGame() {
             // }, function() {
             //     //console.log('sound file loaded!');
             // });
-            var sound = new Audio(filename);
+            var input = document.getElementById("autocomp");
+            input.disabled = false;
+            sound = new Audio(filename);
             sound.play();
             console.log("playing song " + filename);
             youtubeArr.splice(random, 1);
-            startSong({duration: 10000});
+            startSong({duration: duration});
+            setTimeout(function(){
+                sound.pause();
+                
+                input.disabled = true;
+            }, duration);
         });
 }
 
@@ -132,6 +144,39 @@ function loadAutoComp() {
             }
         });
 }
+
+function addScore() {
+    var input = document.getElementById("autocomp");
+    
+    if (answer === input.value) {
+        //Answered Correct
+        console.log(answer);
+        if(youtubeArr.length === 0) {
+            //go to game over screen instead
+        }
+        input.value = "";
+        return time;
+        
+    }
+    else {
+        input.value = "";
+        return 0;
+    }
+}
+var answerSubmit = document.querySelector('#answersubmit');
+
+answerSubmit.addEventListener('click', (function (e) {
+    sound.pause();
+    var score = addScore();
+    cloak.message('updateScore', score);
+    cloak.message('getAllScores');
+    console.log('clicked submit answer');
+    cloak.message('createRoom', userNameInputCreate.value);
+    cloak.message('listUsers');
+    //if () {
+
+    //}
+  }))
 
 function main() {
     changeView('home');
