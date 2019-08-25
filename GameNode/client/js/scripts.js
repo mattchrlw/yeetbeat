@@ -6,7 +6,6 @@ var playlistURL = null;
 var youtubeArr = [];
 var time = 0;
 var answer = "";
-var sound;
 var duration = 20000;
 
 /** Handler functions fired when the view is changed to a particular view. */
@@ -185,13 +184,11 @@ function addScore() {
 var answerSubmit = document.querySelector('#answersubmit');
 
 answerSubmit.addEventListener('click', (function (e) {
-    sound.pause();
+    audio.pause();
     var score = addScore();
     cloak.message('updateScore', score);
     cloak.message('getAllScores');
     console.log('clicked submit answer');
-    cloak.message('createRoom', userNameInputCreate.value);
-    cloak.message('listUsers');
     if (youtubeArr.length === 0) {
         changeView('gameover');
     }
