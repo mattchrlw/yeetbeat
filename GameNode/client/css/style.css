@@ -180,3 +180,7 @@ body {
 .room-user {
     margin: 0.2em 0;
 }
+
+.awesomplete {
+    width: 100%;
+}
