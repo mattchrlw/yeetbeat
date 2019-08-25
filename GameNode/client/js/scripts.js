@@ -95,6 +95,7 @@ function initGame() {
     var input = document.getElementById("autocomp");
     input.disabled = false;
     input.value = '';
+    initProgressCircle(1);
     if (circle)
         circle.set(0);
 }
