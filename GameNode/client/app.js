@@ -16,7 +16,6 @@ var userNameInputCreate = document.querySelector('#nameboxcreate');
 var joinRoomName = document.querySelector('#joinroomname');
 var joinRoomCode = document.querySelector('#joinroomcode');
 var joinRoomButton = document.querySelector('#joinroombutton');
-var answerSubmit = document.querySelector('#answersubmit');
 
 var autocomplete = null;
 var circle = null;
@@ -36,7 +35,26 @@ cloak.configure({
     userCount: function (count) {
       //counter.textContent = count;
     },*/
-    'refreshRoomResponse': function (data) {
+    'joinLobbyResponse': function (success) {
+      console.log('joined lobby');
+      game.refreshLobby();
+    },
+    'getScoreBoard': function (data) {
+      console.log("scoreboard hit");
+      var ul = document.getElementById("scoreboard");
+      ul.innerHTML = "";
+      var ul2 = document.getElementById("scoreboard2");
+      ul2.innerHTML = "";
+      data.forEach(function (item) {
+        var li = document.createElement("li");
+        var li2 = document.createElement("li");
+        li.appendChild(document.createTextNode(item.name + ": " + item.score));
+        li2.appendChild(document.createTextNode(item.name + ": " + item.score));
+        ul.appendChild(li);
+        ul2.appendChild(li2);
+      });
+    },
+    'refreshRoomResponse': function (data) {      
       var users = data.users;
       var roomCount = data.count;
       var UsersElement = document.getElementById('Users');

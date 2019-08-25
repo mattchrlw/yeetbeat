@@ -2,8 +2,12 @@ const SERVER = 'http://localhost:5000'
 
 /** Progress circle for song progress. */
 var circle;
-var youtubeArr = null;
 var playlistURL = null;
+var youtubeArr = [];
+var time = 0;
+var answer = "";
+var sound;
+var duration = 20000;
 
 /** Handler functions fired when the view is changed to a particular view. */
 const viewHandlers = {
@@ -76,6 +80,7 @@ function initProgressCircle(duration) {
         step: function(state, circle) {
             circle.path.setAttribute('stroke', state.color);
             circle.setText(Math.ceil(state.remaining));
+            time = Math.ceil((1-circle.value())*100);
         },
         text: {
             className: 'circle-text',
@@ -158,6 +163,42 @@ openRoomButton.addEventListener('click', async (ev) => {
 });
 
 const startGameButton = document.getElementById('start-game-btn');
+
+function addScore() {
+    var input = document.getElementById("autocomp");
+    
+    if (answer === input.value) {
+        //Answered Correct
+        console.log(answer);
+        if(youtubeArr.length === 0) {
+            //go to game over screen instead
+        }
+        input.value = "";
+        return time;
+        
+    }
+    else {
+        input.value = "";
+        return 0;
+    }
+}
+var answerSubmit = document.querySelector('#answersubmit');
+
+answerSubmit.addEventListener('click', (function (e) {
+    sound.pause();
+    var score = addScore();
+    cloak.message('updateScore', score);
+    cloak.message('getAllScores');
+    console.log('clicked submit answer');
+    cloak.message('createRoom', userNameInputCreate.value);
+    cloak.message('listUsers');
+    if (youtubeArr.length === 0) {
+        changeView('gameover');
+    }
+    else {
+        changeView('results');
+    }
+  }))
 
 function main() {
     changeView('home');
