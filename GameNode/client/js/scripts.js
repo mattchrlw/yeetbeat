@@ -117,6 +117,8 @@ function loadAutoComp() {
         .then(function(songtitles) {
             if (songtitles === 'ERROR: Link invalid') {
                 //problem send help
+                // don't change views
+                console.error(songTitles);
             }
             else {
                 console.log("Completion loaded.")
