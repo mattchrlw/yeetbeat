@@ -207,6 +207,11 @@ cloak.configure({
       user.room.data.ready.push(user.id);
       console.log('user is ready: ' + user.name);
     },
+    'nextSong': async (arg, user) => {
+      user.room.messageMembers('startGameResponse', 
+        {song_names: user.room.data.videos.map(x => x.title)});
+      await sendNextSong(user.room);
+    },
     updateScore: function(arg,user) {
       const guess = arg.guess;
       if (guess === user.room.data.current.title) {
@@ -239,6 +244,9 @@ cloak.configure({
         }
       })
       cloak.messageAll("getScoreBoard", list);
+    },
+    'finishRound': function (arg, user) {
+      user.getRoom().messageMembers('showResults');
     }
 
   },

@@ -21,7 +21,7 @@ var autocomplete = null;
 var circle = null;
 var audio = null;
 var duration = null;
-
+var timer = null;
 
 cloak.configure({
   messages: {
@@ -84,10 +84,6 @@ cloak.configure({
       if (autocomplete)
         autocomplete.destroy();
       autocomplete = new Awesomplete(comp, {list: song_names});
-      if (!playlistURL) {
-        document.getElementById('answersubmit')
-          .classList.add('disabled');
-      }
       changeView('game');
     },
     'loadSong': function(data) {
@@ -105,12 +101,21 @@ cloak.configure({
       console.log('playing audio!');
       circle.animate(0);
       audio.play();
-      setTimeout(()=> {
+      timer = setTimeout(()=> {
         console.log('stopping audio');
         audio.pause();
-        changeView('results');
+        timer = null;
       }, duration);
+    },
+    'showResults': function() {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+        audio.pause();
+      }
+      changeView('results');
     }
+    
   },
   //
   serverEvents: {
@@ -169,10 +174,6 @@ newRoomPart2.addEventListener('click', (function (e) {
 
   cloak.message('newRoom', {username: userNameInputCreate.value, playlist: 'PLAYLIST URL'});
   cloak.message('refreshRoom');
-}));
-answerSubmit.addEventListener('click', (function (e) {
-  console.log('clicked submit answer');
-  cloak.message('newRoom', userNameInputCreate.value);
 }));
 
 document.getElementById('start-game-btn')
