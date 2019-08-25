@@ -125,7 +125,11 @@ answerSubmit.addEventListener('click', (function (e) {
 
 document.getElementById('start-game-btn')
 .addEventListener('click', (ev) => {
-  cloak.message('startGame');
+  if (!playlistURL) {
+    console.warn('not host, cant start game.');
+    return;
+  }
+  cloak.message('startGame', {playlist: playlistURL});
 });
 
 cloak.run(SERVER); // dev mode

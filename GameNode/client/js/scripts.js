@@ -2,7 +2,8 @@ const SERVER = 'http://localhost:5000'
 
 /** Progress circle for song progress. */
 var circle;
-var youtubeArr = [];
+var youtubeArr = null;
+var playlistURL = null;
 
 /** Handler functions fired when the view is changed to a particular view. */
 const viewHandlers = {
@@ -88,25 +89,26 @@ function startSong(songDetails) {
 
 function initGame() {
     // debugger;
-    var random = Math.floor(Math.random() * (youtubeArr.length-0.001));
-    var result = youtubeArr[random];
-    console.log(result);
+    // var random = Math.floor(Math.random() * (youtubeArr.length-0.001));
+    // var result = youtubeArr[random];
+    // console.log(result);
+    // console.log
     
-    fetch(SERVER+"/downloadYoutube/"+encodeURIComponent("https://www.youtube.com/watch?v="+result.video_id))
-        .then(data => data.json())
-        .then(function(filename) {
-            // var sound = new Pizzicato.Sound({ 
-            //     source: 'file',
-            //     options: { path: filename }
-            // }, function() {
-            //     //console.log('sound file loaded!');
-            // });
-            var sound = new Audio(filename);
-            sound.play();
-            console.log("playing song " + filename);
-            youtubeArr.splice(random, 1);
-            startSong({duration: 10000});
-        });
+    // fetch(SERVER+"/downloadYoutube/"+encodeURIComponent("https://www.youtube.com/watch?v="+result.video_id))
+    //     .then(data => data.json())
+    //     .then(function(filename) {
+    //         // var sound = new Pizzicato.Sound({ 
+    //         //     source: 'file',
+    //         //     options: { path: filename }
+    //         // }, function() {
+    //         //     //console.log('sound file loaded!');
+    //         // });
+    //         var sound = new Audio(filename);
+    //         sound.play();
+    //         console.log("playing song " + filename);
+    //         youtubeArr.splice(random, 1);
+    //         startSong({duration: 10000});
+    //     });
 }
 
 async function getAutoComp(playlist) {
@@ -146,15 +148,20 @@ openRoomButton.addEventListener('click', async (ev) => {
     const playlist = document.getElementById("playlistURLvalue").value;
     const songNames = await getAutoComp(playlist);
     if (songNames) {
+        playlistURL = playlist;
         var input = document.getElementById("autocomp");
         new Awesomplete(input, {list: songNames});
         changeView('room');
     } else {
         alert('Error loading playlist!');
+        playlistURL = null;
     }
+    youtubeArr = songNames;
     openRoomButton.classList.remove('disabled');
-    
 });
+
+const startGameButton = document.getElementById('start-game-btn');
+
 
 
 function main() {

@@ -84,9 +84,10 @@ async function getPlayList(playlistURL) {
       //List of songs is the titles of the youtube video
 
       items.forEach(function (value) {
+        if (value.title == 'Private video') return;
         videos.push({
           title: value.title,
-          video_id: value.resourceId.videoId
+          url: 'http://www.youtube.com/watch?v='+value.resourceId.videoId
         });
       });
     });
@@ -99,15 +100,19 @@ async function getPlayList(playlistURL) {
   }
 }
 
-const delay = time => new Promise(res=>setTimeout(res,time));
-app.get('/downloadYoutube/:url', async function (req, res) {
+async function getYoutubeURL(ytURL) {
   const flag = {};
   const data = await downloadYoutubeVid(req.params.url, flag);
   while (!flag.done) {
     await delay(200);
   }
   console.log('returning url: ' + flag.url);
-  res.json(flag.url);
+  return flag.url;
+}
+
+const delay = time => new Promise(res=>setTimeout(res,time));
+app.get('/downloadYoutube/:url', async function (req, res) {
+  res.json(await getYoutubeURL());
 })
 
 app.get('/getPlaylist/:url', async function (req, res) {
@@ -168,8 +173,10 @@ cloak.configure({
       console.log("refreshing other users in room " + room.name);
       sendAllrefreshRoomResponse(room);
     },
-    'startGame': function (arg, user) {
-      user.room.messageMembers('startGameResponse', {song_names: ['a song name', 'another song']});
+    'startGame': async function (arg, user) {
+      console.log('starting game with playlist URL: ' + arg.playlist);
+      const videos = await getPlayList(arg.playlist);
+      user.room.messageMembers('startGameResponse', {song_names: videos.map(x => x.title)});
     } 
 
   },
@@ -177,6 +184,7 @@ cloak.configure({
   lobby: {},
   room: {
     init: function () {
+      this.data = {'TEST': 'yeet', playlist: null, points: {}};
       console.log("Room Initation " + this.name + " " + this.id);
     },
 
