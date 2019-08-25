@@ -37,10 +37,16 @@ cloak.configure({
     'getScoreBoard': function (data) {
       console.log("scoreboard hit");
       var ul = document.getElementById("scoreboard");
+      ul.innerHTML = "";
+      var ul2 = document.getElementById("scoreboard2");
+      ul2.innerHTML = "";
       data.forEach(function (item) {
         var li = document.createElement("li");
+        var li2 = document.createElement("li");
         li.appendChild(document.createTextNode(item.name + ": " + item.score));
+        li2.appendChild(document.createTextNode(item.name + ": " + item.score));
         ul.appendChild(li);
+        ul2.appendChild(li2);
       });
     },
     'refreshRoom': function (data) {
