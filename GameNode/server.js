@@ -9,6 +9,10 @@ const bodyParser = require('body-parser');
 var path = require('path');
 const ypi = require('youtube-playlist-info');
 
+const url = require('url');
+const querystring = require('querystring');
+
+
 
 const PORT = process.env.PORT || 5000
 
@@ -68,11 +72,13 @@ async function downloadYoutubeVid(url, flag) {
   video.on('next', downloadPlaylist);
 }*/
 
-async function getPlayList(url) {
+async function getPlayList(playlistURL) {
   try {
     const videos = [];
-
-    var PlaylistID = url.split("list=")[1];
+    let parsedUrl = url.parse(playlistURL);
+    let parsedQs = querystring.parse(parsedUrl.query);
+    // console.log(querystring.parse(url));
+    var PlaylistID = parsedQs.list;
     await ypi("AIzaSyDt2-8433-k2eK0GGUIUbKvmO2jkbIvH8Y", PlaylistID).then(items => {
       //console.log(items);
       //List of songs is the titles of the youtube video
@@ -87,6 +93,7 @@ async function getPlayList(url) {
     return videos;
   }
   catch (e) {
+    console.error(e);
     //playlist link is invalid, do something, don't continue
     return 'ERROR: Link invalid';
   }
@@ -160,7 +167,10 @@ cloak.configure({
 
       console.log("refreshing other users in room " + room.name);
       sendAllrefreshRoomResponse(room);
-    }
+    },
+    'startGame': function (arg, user) {
+      user.room.messageMembers('startGameResponse', {song_names: ['a song name', 'another song']});
+    } 
 
   },
 

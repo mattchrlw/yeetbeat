@@ -7,8 +7,6 @@ var youtubeArr = [];
 /** Handler functions fired when the view is changed to a particular view. */
 const viewHandlers = {
     game: initGame,
-    room: loadAutoComp,
-    settings: loadAutoComp,
 }
 
 function pushHistory(id) {
@@ -111,29 +109,53 @@ function initGame() {
         });
 }
 
-function loadAutoComp() {
-    fetch(SERVER+"/getPlaylist/"+encodeURIComponent(document.getElementById("playlistURLvalue").value))
+async function getAutoComp(playlist) {
+    console.log('loading autocomplete for: ' + playlist);
+    return await fetch(SERVER+"/getPlaylist/"+encodeURIComponent(playlist))
         .then(data => data.json())
         .then(function(songtitles) {
             if (songtitles === 'ERROR: Link invalid') {
                 //problem send help
                 // don't change views
-                console.error(songTitles);
+                console.error('error downloading songs in playlist');
+                console.error(songtitles);
+                return false;
             }
             else {
-                console.log("Completion loaded.")
-                var alist = [];
-                youtubeArr = songtitles;
-                songtitles.forEach(function(item){
-                    alist.push(item.title);
-                });
-                var input = document.getElementById("autocomp");
-                new Awesomplete(input, {
-                    list: alist
-                });
+                console.log("Completion downloaded, length: " + songtitles.length);
+                return songtitles.map(item => item.title)
+                    .filter(title => title != 'Private video');
             }
         });
 }
+const openRoomButton = document.querySelector('#openroom');
+openRoomButton.addEventListener('click', async (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    if (openRoomButton.classList.contains('disabled')) return;
+    openRoomButton.classList.add('disabled');
+
+    const username = document.getElementById('nameboxcreate').value.trim();
+    if (!username) {
+        alert('Invalid username!');
+        openRoomButton.classList.remove('disabled');
+        return;
+    }
+
+    const playlist = document.getElementById("playlistURLvalue").value;
+    const songNames = await getAutoComp(playlist);
+    if (songNames) {
+        var input = document.getElementById("autocomp");
+        new Awesomplete(input, {list: songNames});
+        changeView('room');
+    } else {
+        alert('Error loading playlist!');
+    }
+    openRoomButton.classList.remove('disabled');
+    
+});
+
 
 function main() {
     changeView('home');

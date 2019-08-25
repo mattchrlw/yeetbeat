@@ -55,6 +55,10 @@ cloak.configure({
       console.log(result.success ? 'Making room succeeded.' : 'room join failure');
       console.log("Room Information " + result.roomId + " " + result.roomName);
     },
+    'startGameResponse': function({song_names}) {
+      console.log("starting game with songs: ");
+      console.log(song_names);
+    }
   },
   //
   serverEvents: {
@@ -118,6 +122,11 @@ answerSubmit.addEventListener('click', (function (e) {
   console.log('clicked submit answer');
   cloak.message('newRoom', userNameInputCreate.value);
 }));
+
+document.getElementById('start-game-btn')
+.addEventListener('click', (ev) => {
+  cloak.message('startGame');
+});
 
 cloak.run(SERVER); // dev mode
 // cloak.run('http://yeetbeat.fun')
