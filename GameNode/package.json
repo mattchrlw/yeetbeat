@@ -7,7 +7,7 @@
     "cloak": "0.2.0",
     "connect": "~2.9.1",
     "express": "^4.17.1",
-    "underscore": "~1.5.2",
+    "underscore": "~1.12.1",
     "youtube-dl": "^2.0.1",
     "youtube-playlist-info": "^1.1.2"
   },
